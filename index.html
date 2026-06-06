@@ -1,0 +1,2129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The ProTrack — From Campus to Career</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #080f0a;
+      --bg2:       #0e1a11;
+      --bg3:       #0a1a0d;
+      --white:     #f4f9f5;
+      --green-dark:#1e6b3a;
+      --green-mid: #2e8b4f;
+      --green-bright:#5ccb82;
+      --green-pale: #a8dbb8;
+      --muted:     #7aaa8a;
+      --border:    rgba(30,107,58,0.28);
+      --border-soft:rgba(92,203,130,0.1);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    /* ═══════════════════════════════
+       NAV
+    ═══════════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 5rem;
+      background: rgba(8,15,10,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: padding 0.3s;
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .nav-logo span { color: var(--green-bright); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.875rem; font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--white); }
+    .nav-cta {
+      background: var(--green-dark);
+      color: var(--white);
+      font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 0.82rem;
+      letter-spacing: 0.05em;
+      padding: 0.6rem 1.4rem;
+      border-radius: 5px;
+      text-decoration: none; cursor: pointer;
+      border: none; outline: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .nav-cta:hover { background: var(--green-mid); transform: translateY(-1px); }
+
+    /* ═══════════════════════════════
+       PAGE SYSTEM
+    ═══════════════════════════════ */
+    .page { display: none; min-height: 100vh; padding-top: 72px; }
+    .page.active { display: block; }
+
+    /* ═══════════════════════════════
+       SHARED HELPERS
+    ═══════════════════════════════ */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 4rem; }
+    .section-label {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--green-bright); margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .section-label::before {
+      content: ''; display: inline-block;
+      width: 24px; height: 2px; background: var(--green-bright);
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.1; letter-spacing: -0.025em;
+    }
+    .section-sub {
+      color: var(--muted); font-size: 1rem;
+      max-width: 560px; margin-top: 1rem;
+      font-weight: 300; line-height: 1.8;
+    }
+    .accent { color: var(--green-bright); }
+    .outline-text {
+      -webkit-text-stroke: 1.5px rgba(244,249,245,0.25);
+      color: transparent;
+    }
+    .grid-overlay {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(30,107,58,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30,107,58,0.05) 1px, transparent 1px);
+      background-size: 56px 56px;
+      pointer-events: none;
+    }
+    .glow {
+      position: absolute; border-radius: 50%;
+      background: radial-gradient(circle, rgba(30,107,58,0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--green-dark); color: var(--white);
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 0.95rem; padding: 0.85rem 2rem;
+      border-radius: 6px; text-decoration: none; cursor: pointer;
+      border: none; outline: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { background: var(--green-mid); transform: translateY(-2px); }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      border: 1px solid var(--border); color: var(--white);
+      font-family: 'Syne', sans-serif; font-weight: 600;
+      font-size: 0.9rem; padding: 0.8rem 1.8rem;
+      border-radius: 6px; text-decoration: none; cursor: pointer;
+      background: transparent;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--green-bright); background: rgba(92,203,130,0.05); }
+    .tag {
+      display: inline-block;
+      background: rgba(92,203,130,0.1);
+      color: var(--green-bright);
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.3rem 0.8rem; border-radius: 100px;
+      border: 1px solid rgba(92,203,130,0.2);
+    }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(28px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity:0; } to { opacity:1; }
+    }
+    .page.active .animate-1 { animation: fadeUp 0.7s 0.05s ease both; }
+    .page.active .animate-2 { animation: fadeUp 0.7s 0.15s ease both; }
+    .page.active .animate-3 { animation: fadeUp 0.7s 0.25s ease both; }
+    .page.active .animate-4 { animation: fadeUp 0.7s 0.35s ease both; }
+    .page.active .animate-5 { animation: fadeUp 0.7s 0.45s ease both; }
+
+    /* ═══════════════════════════════
+       PAGE 1 — HOME
+    ═══════════════════════════════ */
+    #page-home {
+      background: var(--bg);
+    }
+
+    /* Hero */
+    .hero {
+      min-height: calc(100vh - 72px);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 5rem 5rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    .hero .glow { width: 800px; height: 800px; top: -300px; right: -300px; }
+    .hero .glow2 { width: 400px; height: 400px; bottom: -100px; left: -100px;
+      background: radial-gradient(circle, rgba(30,107,58,0.1) 0%, transparent 70%); }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      border: 1px solid var(--border);
+      padding: 0.45rem 1.1rem; border-radius: 100px;
+      font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--green-bright); margin-bottom: 2.2rem; width: fit-content;
+    }
+    .hero-eyebrow .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--green-bright);
+      animation: blink 2s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(3.2rem, 7.5vw, 6.5rem);
+      line-height: 0.98; letter-spacing: -0.03em;
+      max-width: 950px; margin-bottom: 1.8rem;
+    }
+    .hero-sub {
+      font-size: 1.15rem; color: var(--muted);
+      max-width: 520px; font-weight: 300; line-height: 1.75;
+      margin-bottom: 3rem;
+    }
+    .hero-stats {
+      display: flex; gap: 0;
+      border: 1px solid var(--border); border-radius: 12px;
+      overflow: hidden; width: fit-content;
+      margin-bottom: 2.5rem;
+      background: rgba(14,26,17,0.6);
+    }
+    .stat {
+      padding: 1.3rem 2rem;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-n {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 2rem; color: var(--green-bright); line-height: 1;
+    }
+    .stat-l {
+      font-size: 0.75rem; color: var(--muted);
+      letter-spacing: 0.05em; text-transform: uppercase; margin-top: 0.3rem;
+    }
+    .hero-actions { display: flex; align-items: center; gap: 1.2rem; }
+
+    /* Marquee */
+    .marquee-strip {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 0.9rem 0; overflow: hidden;
+      background: rgba(14,26,17,0.4);
+    }
+    .marquee-track {
+      display: flex; gap: 0;
+      width: max-content;
+      animation: marquee 30s linear infinite;
+    }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .marquee-item {
+      display: flex; align-items: center; gap: 2rem;
+      padding: 0 2rem;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); white-space: nowrap;
+    }
+    .marquee-item .dot-sep { color: var(--green-bright); font-size: 1rem; }
+
+    /* Social Proof Strip */
+    .proof-strip {
+      padding: 5rem 5rem;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+    }
+    .proof-strip-inner {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 3rem; align-items: start;
+    }
+    .proof-quote {
+      grid-column: 1 / 3;
+    }
+    .proof-quote blockquote {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.9rem);
+      font-weight: 700; line-height: 1.35;
+      letter-spacing: -0.02em;
+      border-left: 3px solid var(--green-bright);
+      padding-left: 1.8rem;
+    }
+    .proof-quote blockquote em {
+      font-style: normal; color: var(--green-bright);
+    }
+    .proof-meta {
+      display: flex; flex-direction: column; gap: 1.5rem;
+      justify-content: center;
+    }
+    .proof-stat { }
+    .proof-stat .big {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 2.5rem; color: var(--green-bright);
+      line-height: 1;
+    }
+    .proof-stat p { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+
+    /* Who Is This For */
+    .who-section { padding: 6rem 5rem; background: var(--bg); }
+    .who-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; margin-top: 4rem; align-items: start;
+    }
+    .who-list { display: flex; flex-direction: column; gap: 0; }
+    .who-item {
+      display: flex; gap: 1.2rem; align-items: flex-start;
+      padding: 1.4rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: background 0.2s;
+    }
+    .who-item:first-child { border-top: 1px solid rgba(255,255,255,0.05); }
+    .who-check {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: rgba(92,203,130,0.12);
+      border: 1px solid rgba(92,203,130,0.3);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 0.15rem;
+      font-size: 0.65rem; color: var(--green-bright);
+    }
+    .who-item-text strong {
+      display: block; font-weight: 600; margin-bottom: 0.2rem;
+      font-size: 0.95rem;
+    }
+    .who-item-text span { color: var(--muted); font-size: 0.85rem; }
+
+    .who-not { }
+    .who-not-title {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 1.1rem; margin-bottom: 1.5rem;
+      padding-bottom: 1rem; border-bottom: 1px solid var(--border);
+    }
+    .not-item {
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .not-icon { color: var(--muted); flex-shrink: 0; font-size: 0.9rem; margin-top: 0.1rem; }
+    .not-item p { color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
+    .not-item strong { color: var(--white); }
+
+    /* Home CTA Banner */
+    .home-cta-banner {
+      padding: 6rem 5rem;
+      background: linear-gradient(135deg, var(--green-dark) 0%, #0e4020 100%);
+      position: relative; overflow: hidden;
+    }
+    .home-cta-banner .glow { width:600px; height:600px; top:-200px; right:-200px; opacity:0.4; }
+    .home-cta-banner-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 3rem; position: relative; z-index: 1;
+    }
+    .home-cta-banner h2 {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      line-height: 1.15; letter-spacing: -0.025em;
+      max-width: 600px;
+    }
+    .home-cta-banner p { color: rgba(244,249,245,0.7); margin-top: 0.8rem; font-size: 1rem; }
+    .cta-right { flex-shrink: 0; }
+    .btn-white {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--white); color: var(--green-dark);
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 1rem; padding: 1rem 2.2rem;
+      border-radius: 8px; text-decoration: none; cursor: pointer;
+      border: none; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-white:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.3); }
+
+    /* ═══════════════════════════════
+       PAGE 2 — PROGRAM
+    ═══════════════════════════════ */
+    #page-program { background: var(--bg); }
+
+    .program-hero {
+      padding: 5rem 5rem 4rem;
+      background: var(--bg2);
+      position: relative; overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+    .program-hero .glow { width:600px; height:600px; top:-200px; right:-100px; }
+    .program-hero-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: center;
+    }
+    .program-hero h1 {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      line-height: 1.1; letter-spacing: -0.025em;
+      margin-bottom: 1.2rem;
+    }
+    .program-hero p { color: var(--muted); line-height: 1.8; font-size: 1rem; }
+
+    .program-cards-side {
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    .program-card-side {
+      background: rgba(30,107,58,0.08);
+      border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.4rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+      transition: border-color 0.3s;
+    }
+    .program-card-side:hover { border-color: rgba(92,203,130,0.4); }
+    .card-icon {
+      width: 40px; height: 40px; border-radius: 8px;
+      background: rgba(92,203,130,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .program-card-side h4 {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 0.92rem; margin-bottom: 0.3rem;
+    }
+    .program-card-side p { color: var(--muted); font-size: 0.82rem; line-height: 1.5; }
+
+    /* Problem */
+    .problem-section { padding: 6rem 5rem; background: var(--bg); }
+    .problem-grid {
+      display: grid; grid-template-columns: repeat(2,1fr);
+      gap: 1.5rem; margin-top: 3.5rem;
+    }
+    .problem-card {
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px; padding: 2rem;
+      background: rgba(14,26,17,0.4);
+      transition: border-color 0.3s, transform 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .problem-card::after {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--green-bright), transparent);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .problem-card:hover { border-color: var(--border); transform: translateY(-3px); }
+    .problem-card:hover::after { opacity: 1; }
+    .problem-num {
+      font-family: 'Syne', sans-serif; font-size: 0.7rem;
+      font-weight: 700; letter-spacing: 0.1em;
+      color: var(--green-bright); margin-bottom: 1rem;
+    }
+    .problem-card h3 {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 1.05rem; margin-bottom: 0.6rem;
+    }
+    .problem-card p { color: var(--muted); font-size: 0.87rem; line-height: 1.65; }
+
+    /* Beliefs */
+    .beliefs-section {
+      padding: 6rem 5rem;
+      background: linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%);
+    }
+    .beliefs-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2rem; margin-top: 3.5rem;
+    }
+    .belief-card {
+      border: 1px solid var(--border-soft);
+      border-radius: 12px; padding: 2rem;
+      background: rgba(14,26,17,0.5);
+      transition: border-color 0.3s;
+    }
+    .belief-card:hover { border-color: var(--border); }
+    .belief-card-num {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 2.5rem; color: rgba(92,203,130,0.15);
+      line-height: 1; margin-bottom: 1rem;
+    }
+    .belief-card p {
+      font-family: 'Syne', sans-serif; font-weight: 600;
+      font-size: 1rem; line-height: 1.55; letter-spacing: -0.01em;
+    }
+    .belief-card p em { font-style: normal; color: var(--green-bright); }
+
+    /* Format */
+    .format-section { padding: 6rem 5rem; background: var(--bg); }
+    .format-table {
+      width: 100%; border-collapse: collapse;
+      margin-top: 3rem; border-radius: 12px; overflow: hidden;
+    }
+    .format-table th {
+      background: rgba(30,107,58,0.3);
+      padding: 1rem 1.5rem;
+      text-align: left; font-family: 'Syne', sans-serif;
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--green-bright); border-bottom: 1px solid var(--border);
+    }
+    .format-table td {
+      padding: 1.1rem 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.9rem; vertical-align: top;
+    }
+    .format-table tr:last-child td { border-bottom: none; }
+    .format-table tr:nth-child(odd) td { background: rgba(14,26,17,0.3); }
+    .format-table td:first-child {
+      font-weight: 600; color: var(--white); width: 220px;
+    }
+    .format-table td:last-child { color: var(--muted); }
+
+    /* ═══════════════════════════════
+       PAGE 3 — CURRICULUM
+    ═══════════════════════════════ */
+    #page-curriculum { background: var(--bg); }
+
+    .curriculum-hero {
+      padding: 5rem 5rem 3rem;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .curriculum-hero .glow { width:500px; height:500px; top:-150px; right:0; }
+
+    .curriculum-overview {
+      display: flex; gap: 2rem; margin-top: 3rem; flex-wrap: wrap;
+    }
+    .overview-pill {
+      display: flex; align-items: center; gap: 0.6rem;
+      background: rgba(30,107,58,0.12);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.7rem 1.2rem;
+      font-size: 0.85rem;
+    }
+    .overview-pill .pill-val {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      color: var(--green-bright); font-size: 1.1rem;
+    }
+    .overview-pill .pill-label { color: var(--muted); }
+
+    /* Module Timeline */
+    .modules-section { padding: 5rem 5rem; background: var(--bg); }
+    .timeline { position: relative; margin-top: 3rem; }
+    .timeline::before {
+      content: ''; position: absolute;
+      left: 90px; top: 0; bottom: 0; width: 1px;
+      background: linear-gradient(180deg, var(--green-dark), transparent);
+    }
+    .module-row {
+      display: grid; grid-template-columns: 90px 1fr;
+      gap: 0; margin-bottom: 2.5rem; position: relative;
+    }
+    .module-row:last-child { margin-bottom: 0; }
+    .module-time {
+      padding-right: 2rem; padding-top: 0.3rem;
+      text-align: right;
+    }
+    .module-time-label {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 0.72rem; letter-spacing: 0.08em;
+      color: var(--green-bright); text-transform: uppercase;
+    }
+    .module-dot {
+      position: absolute; left: 82px; top: 8px;
+      width: 17px; height: 17px; border-radius: 50%;
+      background: var(--green-dark);
+      border: 2px solid var(--green-bright);
+      z-index: 1;
+    }
+    .module-body {
+      padding-left: 2.5rem;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px; padding: 1.8rem 1.8rem 1.8rem 2.5rem;
+      background: rgba(14,26,17,0.3);
+      transition: border-color 0.3s;
+    }
+    .module-body:hover { border-color: var(--border); }
+    .module-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 1rem; margin-bottom: 1rem;
+    }
+    .module-title {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 1.1rem; letter-spacing: -0.01em;
+    }
+    .module-theme { font-size: 0.8rem; color: var(--green-bright); margin-top: 0.2rem; }
+    .module-weeks {
+      display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.2rem;
+    }
+    .week-row {
+      display: flex; gap: 0.8rem; align-items: flex-start;
+    }
+    .week-label {
+      font-size: 0.72rem; font-weight: 700; color: var(--green-bright);
+      letter-spacing: 0.06em; flex-shrink: 0; margin-top: 0.15rem;
+      width: 24px;
+    }
+    .week-text { font-size: 0.85rem; color: var(--muted); line-height: 1.4; }
+    .week-milestone {
+      font-size: 0.75rem; color: rgba(92,203,130,0.7);
+      font-style: italic;
+    }
+    .module-kpi {
+      margin-top: 1.2rem; padding: 0.8rem 1rem;
+      background: rgba(30,107,58,0.1);
+      border: 1px solid rgba(30,107,58,0.2);
+      border-radius: 8px;
+    }
+    .module-kpi-title {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--green-bright); margin-bottom: 0.5rem;
+    }
+    .module-kpi p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+    /* Outcomes */
+    .outcomes-section { padding: 6rem 5rem; background: var(--bg2); }
+    .outcomes-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1.5rem; margin-top: 3.5rem;
+    }
+    .outcome-card {
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 12px; padding: 2rem;
+      background: rgba(8,15,10,0.6);
+      text-align: center;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .outcome-card:hover { border-color: var(--border); transform: translateY(-4px); }
+    .outcome-big {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 2.8rem; color: var(--green-bright); line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .outcome-title {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 0.9rem; margin-bottom: 0.5rem;
+    }
+    .outcome-desc { color: var(--muted); font-size: 0.82rem; line-height: 1.6; }
+
+    /* Resources */
+    .resources-section { padding: 6rem 5rem; background: var(--bg); }
+    .resources-grid {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 1.2rem; margin-top: 3rem;
+    }
+    .resource-card {
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 10px; padding: 1.4rem;
+      background: rgba(14,26,17,0.3);
+      transition: border-color 0.3s;
+    }
+    .resource-card:hover { border-color: var(--border); }
+    .resource-platform {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 0.88rem; margin-bottom: 0.3rem; color: var(--white);
+    }
+    .resource-domain {
+      font-size: 0.72rem; color: var(--green-bright);
+      letter-spacing: 0.06em; text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .resource-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+    /* ═══════════════════════════════
+       PAGE 4 — FOUNDERS
+    ═══════════════════════════════ */
+    #page-founders { background: var(--bg); }
+
+    .founders-hero {
+      padding: 5rem 5rem 4rem;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .founders-hero .glow { width:600px; height:600px; top:-200px; right:-100px; }
+    .founders-hero h1 {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      line-height: 1.05; letter-spacing: -0.03em;
+      max-width: 700px; margin-bottom: 1.2rem;
+    }
+    .founders-hero p {
+      color: var(--muted); font-size: 1.05rem;
+      max-width: 560px; line-height: 1.8;
+    }
+
+    .founders-origin {
+      padding: 6rem 5rem;
+      background: var(--bg);
+    }
+    .origin-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: start;
+    }
+    .origin-text h2 {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      line-height: 1.15; letter-spacing: -0.025em;
+      margin-bottom: 1.5rem;
+    }
+    .origin-text p {
+      color: var(--muted); font-size: 0.95rem; line-height: 1.85;
+      margin-bottom: 1rem;
+    }
+    .origin-text p strong { color: var(--white); }
+    .origin-insight {
+      background: rgba(30,107,58,0.08);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 2rem;
+    }
+    .origin-insight-title {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 0.8rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--green-bright);
+      margin-bottom: 1rem;
+    }
+    .origin-insight p {
+      font-family: 'Syne', sans-serif; font-size: 1.05rem;
+      font-weight: 600; line-height: 1.55; letter-spacing: -0.01em;
+      color: var(--white);
+    }
+    .origin-insight p em { font-style: normal; color: var(--green-bright); }
+
+    /* Founder Cards */
+    .founders-cards-section { padding: 6rem 5rem; background: var(--bg2); }
+    .founders-cards {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2.5rem; margin-top: 3.5rem;
+    }
+    .founder-card {
+      border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+      background: rgba(8,15,10,0.7);
+      transition: transform 0.3s;
+    }
+    .founder-card:hover { transform: translateY(-6px); }
+    .founder-card-top {
+      padding: 2.5rem;
+      background: linear-gradient(135deg, rgba(30,107,58,0.2) 0%, rgba(8,15,10,0) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+    .founder-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 1.8rem; color: var(--white);
+      margin-bottom: 1.2rem;
+      border: 3px solid rgba(92,203,130,0.3);
+    }
+    .founder-name {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 1.4rem; letter-spacing: -0.02em;
+      margin-bottom: 0.3rem;
+    }
+    .founder-role {
+      font-size: 0.8rem; color: var(--green-bright);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      font-weight: 600;
+    }
+    .founder-card-body { padding: 2rem 2.5rem 2.5rem; }
+    .founder-bio {
+      color: var(--muted); font-size: 0.92rem;
+      line-height: 1.8; margin-bottom: 1.5rem;
+    }
+    .founder-bio strong { color: var(--white); }
+    .founder-beliefs {
+      display: flex; flex-direction: column; gap: 0.8rem;
+    }
+    .founder-belief {
+      display: flex; gap: 0.8rem; align-items: flex-start;
+    }
+    .belief-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green-bright); flex-shrink: 0; margin-top: 0.55rem;
+    }
+    .founder-belief p { font-size: 0.87rem; color: var(--muted); line-height: 1.5; }
+    .founder-belief p strong { color: var(--white); font-weight: 600; }
+    .founder-tags {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem;
+    }
+
+    /* Why We Built This */
+    .why-section { padding: 6rem 5rem; background: var(--bg); }
+    .why-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 2rem; margin-top: 3.5rem;
+    }
+    .why-card {
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 12px; padding: 2rem;
+      background: rgba(14,26,17,0.3);
+      transition: border-color 0.3s;
+    }
+    .why-card:hover { border-color: var(--border); }
+    .why-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .why-card h3 {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 1rem; margin-bottom: 0.6rem;
+    }
+    .why-card p { color: var(--muted); font-size: 0.86rem; line-height: 1.65; }
+
+    /* Vision */
+    .vision-section {
+      padding: 6rem 5rem;
+      background: linear-gradient(135deg, var(--green-dark) 0%, #0a2e14 100%);
+      position: relative; overflow: hidden;
+    }
+    .vision-section .glow { width:700px; height:700px; top:-300px; right:-200px; opacity:0.3; }
+    .vision-inner { position: relative; z-index: 1; max-width: 800px; }
+    .vision-inner blockquote {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      line-height: 1.3; letter-spacing: -0.025em;
+      margin-bottom: 2rem;
+    }
+    .vision-inner p { color: rgba(244,249,245,0.7); font-size: 1rem; line-height: 1.8; }
+
+    /* ═══════════════════════════════
+       PAGE 5 — JOIN / APPLY
+    ═══════════════════════════════ */
+    #page-join { background: var(--bg); }
+
+    .join-hero {
+      padding: 5rem 5rem 4rem;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .join-hero .glow { width:600px; height:600px; top:-200px; right:0; }
+    .join-hero h1 {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      line-height: 1.05; letter-spacing: -0.03em;
+      max-width: 700px; margin-bottom: 1.2rem;
+    }
+    .join-hero p { color: var(--muted); font-size: 1.05rem; max-width: 540px; line-height: 1.8; }
+
+    /* Who can apply */
+    .apply-who { padding: 6rem 5rem; background: var(--bg); }
+    .apply-who-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1.5rem; margin-top: 3.5rem;
+    }
+    .apply-who-card {
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 12px; padding: 1.8rem;
+      background: rgba(14,26,17,0.3);
+      transition: border-color 0.3s;
+    }
+    .apply-who-card:hover { border-color: var(--border); }
+    .apply-who-card .num {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 2rem; color: rgba(92,203,130,0.2); line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .apply-who-card h3 {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 0.95rem; margin-bottom: 0.5rem;
+    }
+    .apply-who-card p { color: var(--muted); font-size: 0.84rem; line-height: 1.6; }
+
+    /* Commitment */
+    .commitment-section { padding: 6rem 5rem; background: var(--bg2); }
+    .commitment-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: start; margin-top: 3.5rem;
+    }
+    .commitment-items { display: flex; flex-direction: column; gap: 1.5rem; }
+    .commit-item {
+      display: flex; gap: 1.2rem; align-items: flex-start;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .commit-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .commit-num {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 1.5rem; color: rgba(92,203,130,0.2);
+      line-height: 1; flex-shrink: 0; width: 2rem;
+    }
+    .commit-item h4 {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 0.92rem; margin-bottom: 0.3rem;
+    }
+    .commit-item p { color: var(--muted); font-size: 0.84rem; line-height: 1.6; }
+
+    /* Apply CTA */
+    .apply-cta-section { padding: 6rem 5rem; background: var(--bg); }
+    .apply-cta-card {
+      background: linear-gradient(135deg, rgba(30,107,58,0.15) 0%, rgba(8,15,10,0) 100%);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 4rem;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
+    }
+    .apply-cta-left h2 {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      line-height: 1.15; letter-spacing: -0.025em;
+      margin-bottom: 1.2rem;
+    }
+    .apply-cta-left p { color: var(--muted); font-size: 0.95rem; line-height: 1.8; }
+    .apply-cta-right { display: flex; flex-direction: column; gap: 1.2rem; }
+    .whatsapp-btn {
+      display: flex; align-items: center; justify-content: center; gap: 0.8rem;
+      background: #25D366; color: #fff;
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 1.05rem; padding: 1.1rem 2rem;
+      border-radius: 10px; text-decoration: none; cursor: pointer;
+      border: none; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .whatsapp-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(37,211,102,0.25); }
+    .whatsapp-icon { font-size: 1.3rem; }
+    .apply-note {
+      font-size: 0.82rem; color: var(--muted); text-align: center; line-height: 1.6;
+    }
+    .apply-checklist { display: flex; flex-direction: column; gap: 0.8rem; }
+    .apply-check {
+      display: flex; gap: 0.7rem; align-items: flex-start;
+      font-size: 0.88rem; color: var(--muted);
+    }
+    .apply-check::before {
+      content: '✓'; color: var(--green-bright);
+      font-weight: 700; flex-shrink: 0;
+    }
+    .apply-check strong { color: var(--white); }
+
+    /* Steps */
+    .steps-section { padding: 6rem 5rem; background: var(--bg2); }
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 0; margin-top: 3.5rem;
+      border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+    }
+    .step-card {
+      padding: 2rem; border-right: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+    .step-card:last-child { border-right: none; }
+    .step-card:hover { background: rgba(30,107,58,0.06); }
+    .step-num {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 2.5rem; color: rgba(92,203,130,0.15);
+      line-height: 1; margin-bottom: 1rem;
+    }
+    .step-card h3 {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 0.92rem; margin-bottom: 0.5rem;
+    }
+    .step-card p { color: var(--muted); font-size: 0.82rem; line-height: 1.6; }
+
+    /* FAQ */
+    .faq-section { padding: 6rem 5rem; background: var(--bg); }
+    .faq-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1.5rem; margin-top: 3.5rem;
+    }
+    .faq-item {
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 10px; padding: 1.6rem;
+      background: rgba(14,26,17,0.3);
+      transition: border-color 0.3s;
+    }
+    .faq-item:hover { border-color: var(--border); }
+    .faq-q {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 0.92rem; margin-bottom: 0.6rem; color: var(--white);
+    }
+    .faq-a { color: var(--muted); font-size: 0.85rem; line-height: 1.7; }
+
+    /* ═══════════════════════════════
+       FOOTER
+    ═══════════════════════════════ */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 3rem 5rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+    }
+    .footer-logo {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 1.1rem; color: var(--white);
+      cursor: pointer;
+    }
+    .footer-logo span { color: var(--green-bright); }
+    .footer-center { color: var(--muted); font-size: 0.8rem; text-align: center; }
+    .footer-right { display: flex; gap: 1.5rem; }
+    .footer-right a {
+      color: var(--muted); text-decoration: none; font-size: 0.82rem;
+      transition: color 0.2s; cursor: pointer;
+    }
+    .footer-right a:hover { color: var(--white); }
+
+    /* ═══════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════ */
+    @media (max-width: 1024px) {
+      nav { padding: 1rem 2rem; }
+      .nav-links { display: none; }
+      .hero, .proof-strip, .who-section, .home-cta-banner,
+      .program-hero, .problem-section, .beliefs-section,
+      .format-section, .curriculum-hero, .modules-section,
+      .outcomes-section, .resources-section,
+      .founders-hero, .founders-origin, .founders-cards-section,
+      .why-section, .vision-section,
+      .join-hero, .apply-who, .commitment-section, .apply-cta-section,
+      .steps-section, .faq-section { padding-left: 1.8rem; padding-right: 1.8rem; }
+      footer { padding: 2rem 1.8rem; flex-direction: column; text-align: center; }
+      .proof-strip-inner { grid-template-columns: 1fr; }
+      .proof-quote { grid-column: 1; }
+      .who-grid, .program-hero-inner, .origin-inner,
+      .commitment-grid, .apply-cta-card { grid-template-columns: 1fr; gap: 2.5rem; }
+      .founders-cards { grid-template-columns: 1fr; }
+      .beliefs-grid, .problem-grid, .faq-grid { grid-template-columns: 1fr; }
+      .outcomes-grid { grid-template-columns: 1fr 1fr; }
+      .resources-grid { grid-template-columns: 1fr 1fr; }
+      .why-grid, .apply-who-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr 1fr; }
+      .step-card:nth-child(2) { border-right: none; }
+      .step-card:nth-child(3) { border-top: 1px solid var(--border); }
+      .step-card:nth-child(4) { border-top: 1px solid var(--border); border-right: none; }
+      .home-cta-banner-inner { flex-direction: column; }
+      .hero-stats { flex-wrap: wrap; }
+    }
+    @media (max-width: 600px) {
+      .outcomes-grid { grid-template-columns: 1fr; }
+      .resources-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ NAV ══════════ -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">The<span>ProTrack</span></div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" id="nav-home">Home</a></li>
+    <li><a onclick="showPage('program')" id="nav-program">Program</a></li>
+    <li><a onclick="showPage('curriculum')" id="nav-curriculum">Curriculum</a></li>
+    <li><a onclick="showPage('founders')" id="nav-founders">Founders</a></li>
+    <li><a onclick="showPage('join')" id="nav-join">Join</a></li>
+  </ul>
+  <button class="nav-cta" onclick="showPage('join')">Apply Now →</button>
+</nav>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 1 — HOME
+══════════════════════════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="grid-overlay"></div>
+    <div class="glow" style="width:800px;height:800px;top:-300px;right:-300px;"></div>
+    <div class="glow" style="width:400px;height:400px;bottom:-100px;left:-100px;background:radial-gradient(circle,rgba(30,107,58,0.1) 0%,transparent 70%);"></div>
+
+    <div class="hero-eyebrow animate-1">
+      <span class="dot"></span>
+      Now Enrolling · Batch 1 · 10 Seats Only
+    </div>
+
+    <h1 class="animate-2">
+      Stop Being<br>
+      <span class="outline-text">Invisible.</span><br>
+      <span class="accent">Get Hired.</span>
+    </h1>
+
+    <p class="hero-sub animate-3">
+      A 10-month career acceleration program that transforms college students into job-ready professionals — with a real LinkedIn presence, a proven skill, and their first offer secured.
+    </p>
+
+    <div class="hero-stats animate-4">
+      <div class="stat">
+        <div class="stat-n">10</div>
+        <div class="stat-l">Months</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">10</div>
+        <div class="stat-l">Students / Batch</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">500+</div>
+        <div class="stat-l">Target Connections</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">40+</div>
+        <div class="stat-l">Milestones</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">1</div>
+        <div class="stat-l">Real Offer / Client</div>
+      </div>
+    </div>
+
+    <div class="hero-actions animate-5">
+      <button class="btn-primary" onclick="showPage('join')">Reserve Your Seat →</button>
+      <button class="btn-outline" onclick="showPage('curriculum')">See the Curriculum</button>
+    </div>
+  </section>
+
+  <!-- Marquee -->
+  <div class="marquee-strip">
+    <div class="marquee-track">
+      <div class="marquee-item">LinkedIn Mastery <span class="dot-sep">✦</span></div>
+      <div class="marquee-item">Personal Branding <span class="dot-sep">✦</span></div>
+      <div class="marquee-item">AI Productivity <span class="dot-sep">✦</span></div>
+      <div class="marquee-item">Freelancing Skills <span class="dot-sep">✦</span></div>
+      <div class="marquee-item">Self-Directed Learning <span class="dot-sep">✦</span></div>
+      <div class="marquee-item">Job Search System <span class="dot-sep">✦</span></div>
+      <div class="marquee-item">First Offer Secured <span class="dot-sep">✦</span></div>
+      <div class="marquee-item">LinkedIn Mastery <span class="dot-sep">✦</span></div>
+      <div class="marquee-item">Personal Branding <span class="dot-sep">✦</span></div>
+      <div class="marquee-item">AI Productivity <span class="dot-sep">✦</span></div>
+      <div class="marquee-item">Freelancing Skills <span class="dot-sep">✦</span></div>
+      <div class="marquee-item">Self-Directed Learning <span class="dot-sep">✦</span></div>
+      <div class="marquee-item">Job Search System <span class="dot-sep">✦</span></div>
+      <div class="marquee-item">First Offer Secured <span class="dot-sep">✦</span></div>
+    </div>
+  </div>
+
+  <!-- Proof Strip -->
+  <section class="proof-strip">
+    <div class="proof-strip-inner">
+      <div class="proof-quote">
+        <div class="section-label">The Core Insight</div>
+        <blockquote>
+          A student with <em>500 purposeful connections</em> and 2 real projects is more hireable than a student with a 9-pointer and a passive profile.
+        </blockquote>
+      </div>
+      <div class="proof-meta">
+        <div class="proof-stat">
+          <div class="big">70%</div>
+          <p>of first jobs come from networks — not job boards</p>
+        </div>
+        <div class="proof-stat">
+          <div class="big">3–5 hrs</div>
+          <p>per week is all it takes to transform your career trajectory</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who It's For -->
+  <section class="who-section">
+    <div class="section-label">Who This Is For</div>
+    <h2 class="section-title">Built for students who are serious about their first opportunity.</h2>
+
+    <div class="who-grid">
+      <div>
+        <div class="who-list">
+          <div class="who-item">
+            <div class="who-check">✓</div>
+            <div class="who-item-text">
+              <strong>College students aged 19–24</strong>
+              <span>In any stream — engineering, commerce, arts, science, management</span>
+            </div>
+          </div>
+          <div class="who-item">
+            <div class="who-check">✓</div>
+            <div class="who-item-text">
+              <strong>Zero or dormant LinkedIn presence</strong>
+              <span>You don't need to have started — just the willingness to build</span>
+            </div>
+          </div>
+          <div class="who-item">
+            <div class="who-check">✓</div>
+            <div class="who-item-text">
+              <strong>Targeting first internship, job or freelance client</strong>
+              <span>Within 12 months of joining the program</span>
+            </div>
+          </div>
+          <div class="who-item">
+            <div class="who-check">✓</div>
+            <div class="who-item-text">
+              <strong>Willing to commit 3–5 hours per week</strong>
+              <span>Outside college. Consistent effort over 10 months is the only requirement</span>
+            </div>
+          </div>
+          <div class="who-item">
+            <div class="who-check">✓</div>
+            <div class="who-item-text">
+              <strong>Any location, any device</strong>
+              <span>The program runs entirely on a smartphone and free internet connection</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="who-not">
+        <div class="who-not-title">What The ProTrack is NOT</div>
+        <div class="not-item">
+          <div class="not-icon">✕</div>
+          <p><strong>Not a certificate program.</strong> The output is a LinkedIn profile, real projects, and job offers — not a PDF certificate.</p>
+        </div>
+        <div class="not-item">
+          <div class="not-icon">✕</div>
+          <p><strong>Not a placement agency.</strong> We teach the skills and system; you execute and own the results.</p>
+        </div>
+        <div class="not-item">
+          <div class="not-icon">✕</div>
+          <p><strong>Not a content creation course.</strong> You are a professional documenting growth — not an influencer chasing reach.</p>
+        </div>
+        <div class="not-item">
+          <div class="not-icon">✕</div>
+          <p><strong>Not for passive learners.</strong> Weekly milestones are non-negotiable. Commitment is the entry bar, not a degree score.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Home CTA Banner -->
+  <section class="home-cta-banner">
+    <div class="glow" style="width:600px;height:600px;top:-200px;right:-200px;opacity:0.4;"></div>
+    <div class="home-cta-banner-inner">
+      <div>
+        <h2>Geography is no longer a barrier.<br>Your career starts now.</h2>
+        <p>A student from anywhere can connect with a founder in Dubai, a recruiter in Bengaluru, or a VC in Singapore — from a smartphone. The ProTrack makes that happen systematically.</p>
+      </div>
+      <div class="cta-right">
+        <button class="btn-white" onclick="showPage('join')">Apply for Batch 1 →</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 2 — PROGRAM
+══════════════════════════════════════════════ -->
+<div class="page" id="page-program">
+
+  <!-- Hero -->
+  <section class="program-hero">
+    <div class="grid-overlay"></div>
+    <div class="glow" style="width:600px;height:600px;top:-200px;right:-100px;"></div>
+    <div class="program-hero-inner">
+      <div>
+        <div class="section-label">The Program</div>
+        <h1>A system to go from campus to career — before graduation.</h1>
+        <p style="margin-top:1.2rem;">Most Kerala graduates finish college invisible to the professional world. No digital presence, no network, no proof of skill beyond a transcript. The ProTrack closes that gap in 10 structured months.</p>
+        <div style="display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap;">
+          <button class="btn-primary" onclick="showPage('curriculum')">View Curriculum →</button>
+          <button class="btn-outline" onclick="showPage('join')">Apply Now</button>
+        </div>
+      </div>
+      <div class="program-cards-side">
+        <div class="program-card-side">
+          <div class="card-icon">🎯</div>
+          <div>
+            <h4>Outcome-First Design</h4>
+            <p>Every module is built backwards from one goal: securing your first real opportunity before month 10 ends.</p>
+          </div>
+        </div>
+        <div class="program-card-side">
+          <div class="card-icon">📱</div>
+          <div>
+            <h4>Smartphone-Friendly</h4>
+            <p>No laptop or paid tools required. The entire program runs on a smartphone and a free internet connection.</p>
+          </div>
+        </div>
+        <div class="program-card-side">
+          <div class="card-icon">👥</div>
+          <div>
+            <h4>Small Batch, High Accountability</h4>
+            <p>Maximum 10 students per batch. Every student is seen, tracked, and held to weekly milestones.</p>
+          </div>
+        </div>
+        <div class="program-card-side">
+          <div class="card-icon">🆓</div>
+          <div>
+            <h4>100% Free Resource Stack</h4>
+            <p>YouTube, freeCodeCamp, Kaggle, Google Skillshop — world-class learning at zero cost.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Problem -->
+  <section class="problem-section">
+    <div class="section-label">The Problem We Solve</div>
+    <h2 class="section-title">Three compounding disadvantages every graduate faces.</h2>
+    <p class="section-sub">Despite strong academic performance, most students aged 19–24 hit these walls the moment they enter the job market.</p>
+
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-num">PROBLEM 01</div>
+        <h3>Digital Invisibility</h3>
+        <p>Most graduates have no LinkedIn presence or a hollow profile that says nothing beyond their college name. Recruiters scroll past. Opportunities never arrive. The internet can't find you if you don't exist on it.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-num">PROBLEM 02</div>
+        <h3>The Skills Gap</h3>
+        <p>Degrees certify knowledge from 4 years ago. The market wants applied skills in AI, data, marketing, and product — learnable for free online but rarely taught in class. Certificates aren't proof; projects are.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-num">PROBLEM 03</div>
+        <h3>No Professional Network</h3>
+        <p>Most students only know classmates and professors. First jobs come from networks. Without one, talented students lose to less-capable but better-connected peers who got the call before the job was posted.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-num">PROBLEM 04</div>
+        <h3>Content vs. Career Confusion</h3>
+        <p>Students either avoid social media professionally or chase follower counts and viral posts. Neither leads to a job. LinkedIn is a career tool — used with intention, it's the fastest path from classroom to offer.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Beliefs -->
+  <section class="beliefs-section">
+    <div class="section-label">Core Beliefs</div>
+    <h2 class="section-title">The principles that shape every decision we make.</h2>
+
+    <div class="beliefs-grid">
+      <div class="belief-card">
+        <div class="belief-card-num">01</div>
+        <p>A student with <em>500 purposeful LinkedIn connections</em> and 2 real projects is more hireable than a student with a 9-pointer and a passive profile.</p>
+      </div>
+      <div class="belief-card">
+        <div class="belief-card-num">02</div>
+        <p>Self-learning is now <em>faster and cheaper</em> than any degree module. The internet is the curriculum. We teach students how to use it — not what to memorise.</p>
+      </div>
+      <div class="belief-card">
+        <div class="belief-card-num">03</div>
+        <p>Geography is <em>no longer a barrier.</em> A student in Thrissur can connect with a founder in Dubai, a recruiter in Bengaluru, or a VC in Singapore from a smartphone.</p>
+      </div>
+      <div class="belief-card">
+        <div class="belief-card-num">04</div>
+        <p>The best career move a 20-year-old can make is to become <em>discoverable</em> — and this program makes that happen systematically, with weekly accountability.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Format -->
+  <section class="format-section">
+    <div class="section-label">Program Format</div>
+    <h2 class="section-title">Simple structure. Maximum accountability.</h2>
+
+    <table class="format-table">
+      <thead>
+        <tr>
+          <th>Element</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Duration</td><td>10 months · 40 weeks · 40 defined milestones</td></tr>
+        <tr><td>Batch Size</td><td>Maximum 10 students per batch — for quality accountability and personal attention</td></tr>
+        <tr><td>Live Sessions</td><td>1 group session per month × 10 months = 10 hours total live time</td></tr>
+        <tr><td>Session Format</td><td>Group video call — review, Q&A, hot-seat coaching, and next month brief</td></tr>
+        <tr><td>Weekly Milestones</td><td>Each student completes 1 defined milestone per week (40 total over 10 months)</td></tr>
+        <tr><td>Communication</td><td>Closed WhatsApp or Telegram group for daily accountability and peer support</td></tr>
+        <tr><td>Platforms Used</td><td>LinkedIn (primary) · YouTube · Free learning platforms · No paid tools required</td></tr>
+        <tr><td>Who Can Join</td><td>Students aged 19–24 in any stream — engineering, commerce, arts, science, management</td></tr>
+        <tr><td>Device Required</td><td>Smartphone + free internet connection is sufficient for all program activities</td></tr>
+        <tr><td>Exit Outcome</td><td>Job-ready: 500+ connections, 2+ projects shipped, 1 internship or offer secured</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 3 — CURRICULUM
+══════════════════════════════════════════════ -->
+<div class="page" id="page-curriculum">
+
+  <!-- Hero -->
+  <section class="curriculum-hero">
+    <div class="grid-overlay"></div>
+    <div class="glow" style="width:500px;height:500px;top:-150px;right:0;"></div>
+    <div class="section-label">The Curriculum</div>
+    <h1 class="section-title" style="max-width:700px;">6 modules. 40 milestones.<br>One outcome that matters.</h1>
+    <p class="section-sub">LinkedIn foundation comes first — without a strong profile, learning and networking have no surface to land on. Self-learning comes in the middle. Career conversion comes last, when you have the proof to back your pitch.</p>
+
+    <div class="curriculum-overview">
+      <div class="overview-pill">
+        <span class="pill-val">6</span>
+        <span class="pill-label">Core Modules</span>
+      </div>
+      <div class="overview-pill">
+        <span class="pill-val">10</span>
+        <span class="pill-label">Months</span>
+      </div>
+      <div class="overview-pill">
+        <span class="pill-val">40</span>
+        <span class="pill-label">Weekly Milestones</span>
+      </div>
+      <div class="overview-pill">
+        <span class="pill-val">10</span>
+        <span class="pill-label">Live Sessions</span>
+      </div>
+      <div class="overview-pill">
+        <span class="pill-val">₹0</span>
+        <span class="pill-label">Extra Tools Needed</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modules Timeline -->
+  <section class="modules-section">
+    <div class="section-label">Month by Month</div>
+    <h2 class="section-title">Every week has a purpose.</h2>
+
+    <div class="timeline">
+
+      <!-- M1-3 -->
+      <div class="module-row">
+        <div class="module-time">
+          <div class="module-time-label">M 1–3</div>
+        </div>
+        <div class="module-dot"></div>
+        <div class="module-body">
+          <div class="module-header">
+            <div>
+              <div class="module-title">LinkedIn Mastery</div>
+              <div class="module-theme">Visibility + Networking</div>
+            </div>
+            <span class="tag">Foundation</span>
+          </div>
+          <div class="module-weeks">
+            <div class="week-row">
+              <span class="week-label">W1</span>
+              <span class="week-text">Write a magnetic headline — not your college name <span class="week-milestone">· Milestone: New headline live on profile</span></span>
+            </div>
+            <div class="week-row">
+              <span class="week-label">W2</span>
+              <span class="week-text">Craft About section — your story, skills, and what you seek <span class="week-milestone">· Milestone: About section complete</span></span>
+            </div>
+            <div class="week-row">
+              <span class="week-label">W3</span>
+              <span class="week-text">Add projects, skills, certifications with context <span class="week-milestone">· Milestone: 3 projects added with descriptions</span></span>
+            </div>
+            <div class="week-row">
+              <span class="week-label">W4</span>
+              <span class="week-text">LinkedIn algorithm — what it rewards and how to grow consistently <span class="week-milestone">· Milestone: First learning post published</span></span>
+            </div>
+            <div class="week-row">
+              <span class="week-label">W5–8</span>
+              <span class="week-text">Post formats, cadence (3×/week), analytics, commenting frameworks, cold DM 3-sentence rule, follow-up etiquette</span>
+            </div>
+          </div>
+          <div class="module-kpi">
+            <div class="module-kpi-title">Month 3 KPIs</div>
+            <p>Profile score 90%+ · SSI score 40+ · 250 connections in target field · 8+ posts published · 30 quality comments · 1 real mentor connected</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- M4-5 -->
+      <div class="module-row">
+        <div class="module-time">
+          <div class="module-time-label">M 4–5</div>
+        </div>
+        <div class="module-dot"></div>
+        <div class="module-body">
+          <div class="module-header">
+            <div>
+              <div class="module-title">Self-Directed Learning</div>
+              <div class="module-theme">Skill Acquisition + Project Proof</div>
+            </div>
+            <span class="tag">Growth</span>
+          </div>
+          <div class="module-weeks">
+            <div class="week-row">
+              <span class="week-label">W1</span>
+              <span class="week-text">Market mapping — how to pick the right skill for your goal <span class="week-milestone">· Milestone: Skill chosen and justified in writing</span></span>
+            </div>
+            <div class="week-row">
+              <span class="week-label">W2</span>
+              <span class="week-text">Build an 8-week learning plan using free resources only <span class="week-milestone">· Milestone: Learning plan submitted to group</span></span>
+            </div>
+            <div class="week-row">
+              <span class="week-label">W3</span>
+              <span class="week-text">Active learning — Feynman technique, notes, learning in public <span class="week-milestone">· Milestone: First learning-in-public post live</span></span>
+            </div>
+            <div class="week-row">
+              <span class="week-label">W4–8</span>
+              <span class="week-text">Design, build and ship a real project. Publish on GitHub / Behance / Notion. Write a post-mortem reflection post.</span>
+            </div>
+          </div>
+          <div class="module-kpi">
+            <div class="module-kpi-title">Month 5 KPIs</div>
+            <p>Skill chosen with 8-week plan · 20 hours focused study logged · 1 project shipped and publicly linked · Project post gets 20+ reactions · Added to LinkedIn featured section</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- M6 -->
+      <div class="module-row">
+        <div class="module-time">
+          <div class="module-time-label">M 6</div>
+        </div>
+        <div class="module-dot"></div>
+        <div class="module-body">
+          <div class="module-header">
+            <div>
+              <div class="module-title">AI Productivity</div>
+              <div class="module-theme">Tool Leverage</div>
+            </div>
+            <span class="tag">Leverage</span>
+          </div>
+          <div class="module-weeks">
+            <div class="week-row">
+              <span class="week-label">W1</span>
+              <span class="week-text">AI tools landscape — ChatGPT, Claude, Gemini, Perplexity tested and reviewed <span class="week-milestone">· Milestone: 3 tools tested, post published</span></span>
+            </div>
+            <div class="week-row">
+              <span class="week-label">W2</span>
+              <span class="week-text">Use AI to write better LinkedIn posts and DMs — faster <span class="week-milestone">· Milestone: 2 AI-assisted posts published</span></span>
+            </div>
+            <div class="week-row">
+              <span class="week-label">W3</span>
+              <span class="week-text">AI for skill learning — prompting for explanation, practice, debugging <span class="week-milestone">· Milestone: AI learning session documented</span></span>
+            </div>
+            <div class="week-row">
+              <span class="week-label">W4</span>
+              <span class="week-text">Build and share your personal AI workflow — in daily use <span class="week-milestone">· Milestone: AI workflow shared with the group</span></span>
+            </div>
+          </div>
+          <div class="module-kpi">
+            <div class="module-kpi-title">Month 6 KPIs</div>
+            <p>Personal AI workflow built and in daily use · Content creation time cut by half · 1 AI-focused post gets strong engagement · SSI score 55+</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- M7 -->
+      <div class="module-row">
+        <div class="module-time">
+          <div class="module-time-label">M 7</div>
+        </div>
+        <div class="module-dot"></div>
+        <div class="module-body">
+          <div class="module-header">
+            <div>
+              <div class="module-title">Personal Branding</div>
+              <div class="module-theme">Niche Positioning</div>
+            </div>
+            <span class="tag">Identity</span>
+          </div>
+          <div class="module-weeks">
+            <div class="week-row">
+              <span class="week-label">W1</span>
+              <span class="week-text">Define your niche — intersection of skill, passion, and market demand <span class="week-milestone">· Milestone: Niche statement in one sentence</span></span>
+            </div>
+            <div class="week-row">
+              <span class="week-label">W2</span>
+              <span class="week-text">Rewrite headline and About section with niche positioning <span class="week-milestone">· Milestone: Profile updated with niche language</span></span>
+            </div>
+            <div class="week-row">
+              <span class="week-label">W3</span>
+              <span class="week-text">Content pillars — 3 topics you will own on LinkedIn <span class="week-milestone">· Milestone: 30-day content plan made</span></span>
+            </div>
+            <div class="week-row">
+              <span class="week-label">W4</span>
+              <span class="week-text">Create your first authority post — long-form insights, data, or opinion <span class="week-milestone">· Milestone: Long-form post published</span></span>
+            </div>
+          </div>
+          <div class="module-kpi">
+            <div class="module-kpi-title">Month 7 KPIs</div>
+            <p>Clear niche visible on profile · 1,000+ impressions on one post · 500 connections total · Inbound connection from an industry professional</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- M8 -->
+      <div class="module-row">
+        <div class="module-time">
+          <div class="module-time-label">M 8</div>
+        </div>
+        <div class="module-dot"></div>
+        <div class="module-body">
+          <div class="module-header">
+            <div>
+              <div class="module-title">Freelancing</div>
+              <div class="module-theme">Income Generation</div>
+            </div>
+            <span class="tag">Revenue</span>
+          </div>
+          <div class="module-weeks">
+            <div class="week-row">
+              <span class="week-label">W1</span>
+              <span class="week-text">Package your skills into a service — pricing and positioning <span class="week-milestone">· Milestone: Service defined and priced</span></span>
+            </div>
+            <div class="week-row">
+              <span class="week-label">W2</span>
+              <span class="week-text">LinkedIn for freelance leads — signal availability, update Open to Work <span class="week-milestone">· Milestone: Services post live</span></span>
+            </div>
+            <div class="week-row">
+              <span class="week-label">W3</span>
+              <span class="week-text">Outreach to 10 potential clients — templates and scripts <span class="week-milestone">· Milestone: 10 outreach DMs sent</span></span>
+            </div>
+            <div class="week-row">
+              <span class="week-label">W4</span>
+              <span class="week-text">Proposal writing, pricing, and basic contracts for students <span class="week-milestone">· Milestone: 1 proposal sent or 1 client call done</span></span>
+            </div>
+          </div>
+          <div class="module-kpi">
+            <div class="module-kpi-title">Month 8 KPIs</div>
+            <p>1 service packaged with clear pricing · 10 outreach attempts made · 1 client conversation or proposal sent · First ₹500–2,000 earned (stretch goal)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- M9-10 -->
+      <div class="module-row">
+        <div class="module-time">
+          <div class="module-time-label">M 9–10</div>
+        </div>
+        <div class="module-dot"></div>
+        <div class="module-body">
+          <div class="module-header">
+            <div>
+              <div class="module-title">Job Search + Launch</div>
+              <div class="module-theme">Career Conversion</div>
+            </div>
+            <span class="tag">Outcome</span>
+          </div>
+          <div class="module-weeks">
+            <div class="week-row">
+              <span class="week-label">W1</span>
+              <span class="week-text">LinkedIn Jobs — filters, alerts, Easy Apply strategy <span class="week-milestone">· Milestone: 5 roles applied to</span></span>
+            </div>
+            <div class="week-row">
+              <span class="week-label">W2</span>
+              <span class="week-text">Reach out to employees before applying — informational asks <span class="week-milestone">· Milestone: 5 insider DMs sent</span></span>
+            </div>
+            <div class="week-row">
+              <span class="week-label">W3</span>
+              <span class="week-text">Interview prep using AI — mock answers, company research <span class="week-milestone">· Milestone: 3 mock answers drafted</span></span>
+            </div>
+            <div class="week-row">
+              <span class="week-label">W4–8</span>
+              <span class="week-text">Full LinkedIn audit · Portfolio page build · 60-second pitch recorded · 6-month career plan written</span>
+            </div>
+          </div>
+          <div class="module-kpi">
+            <div class="module-kpi-title">Month 10 Exit KPIs</div>
+            <p>500+ connections (70% in target industry) · 1 offer, internship, or paid client · 2+ projects live in portfolio · SSI score 70+ (top 10% of peers)</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Outcomes -->
+  <section class="outcomes-section">
+    <div class="section-label">Exit Outcomes</div>
+    <h2 class="section-title">What job-ready actually looks like.</h2>
+    <p class="section-sub">A student who completes all 10 months with consistent weekly milestones will demonstrate the following by the final session.</p>
+
+    <div class="outcomes-grid">
+      <div class="outcome-card">
+        <div class="outcome-big">500+</div>
+        <div class="outcome-title">LinkedIn Connections</div>
+        <div class="outcome-desc">70% in target industry. Proof of a real professional network — not just classmates.</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-big">70+</div>
+        <div class="outcome-title">SSI Score</div>
+        <div class="outcome-desc">LinkedIn's own measure of professional presence and activity. Top 10% of peers.</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-big">2+</div>
+        <div class="outcome-title">Projects Shipped</div>
+        <div class="outcome-desc">Publicly linked. Tangible proof of skill that any recruiter can click and verify.</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-big">40+</div>
+        <div class="outcome-title">Posts Published</div>
+        <div class="outcome-desc">Documented growth habit and consistent professional voice over 10 months.</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-big">1</div>
+        <div class="outcome-title">Real Opportunity</div>
+        <div class="outcome-desc">Internship, job offer, or paid freelance client. The only KPI that actually matters.</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-big">1</div>
+        <div class="outcome-title">Market Skill</div>
+        <div class="outcome-desc">Applied capability with project proof — beyond the degree transcript.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resources -->
+  <section class="resources-section">
+    <div class="section-label">Free Resource Stack</div>
+    <h2 class="section-title">Everything needed. Zero paid tools.</h2>
+    <p class="section-sub">All resources used in this program are free. No student needs to purchase any subscription or course.</p>
+
+    <div class="resources-grid">
+      <div class="resource-card">
+        <div class="resource-platform">YouTube</div>
+        <div class="resource-domain">Any Skill</div>
+        <div class="resource-desc">The best teachers in the world post free tutorials. Deep learning for every domain.</div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-platform">freeCodeCamp</div>
+        <div class="resource-domain">Coding · Data · Web</div>
+        <div class="resource-desc">Structured learning paths for technical skills. Fully free, project-based.</div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-platform">CS50 / MIT OCW</div>
+        <div class="resource-domain">Computer Science</div>
+        <div class="resource-desc">World-class university content open to anyone with an internet connection.</div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-platform">Google Skillshop</div>
+        <div class="resource-domain">Marketing · Analytics</div>
+        <div class="resource-desc">Google's own free certification platform for digital marketing and analytics skills.</div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-platform">Kaggle</div>
+        <div class="resource-domain">Data · AI · ML</div>
+        <div class="resource-desc">Free notebooks, datasets, and competitions for building real data skills.</div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-platform">Claude / ChatGPT</div>
+        <div class="resource-domain">All Learning</div>
+        <div class="resource-desc">Use as a tutor: explain concepts, generate practice questions, debug your work.</div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-platform">LinkedIn Learning</div>
+        <div class="resource-domain">Soft Skills · Business</div>
+        <div class="resource-desc">First month free — use strategically for business and communication fundamentals.</div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-platform">Notion / Google Docs</div>
+        <div class="resource-domain">Productivity</div>
+        <div class="resource-desc">Document your learning, build your portfolio, and share work with recruiters.</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 4 — FOUNDERS
+══════════════════════════════════════════════ -->
+<div class="page" id="page-founders">
+
+  <!-- Hero -->
+  <section class="founders-hero">
+    <div class="grid-overlay"></div>
+    <div class="glow" style="width:600px;height:600px;top:-200px;right:-100px;"></div>
+    <div class="section-label">The Founders</div>
+    <h1>Built by people who lived<br>the problem firsthand.</h1>
+    <p>The ProTrack was created by two professionals who watched talented peers lose opportunities — not because of ability, but because of visibility. They built the system they wish had existed when they were students.</p>
+  </section>
+
+  <!-- Origin Story -->
+  <section class="founders-origin">
+    <div class="origin-inner">
+      <div class="origin-text">
+        <h2>The problem wasn't talent. It was invisibility.</h2>
+        <p>Kerala produces some of India's most academically capable graduates. Brilliant students — engineers, commerce graduates, science majors — finishing college every year with strong marks and weak networks.</p>
+        <p>They watched it happen repeatedly: <strong>talented peers who couldn't get interviews</strong> not because they lacked ability, but because the right people had never heard of them. LinkedIn profiles that said nothing. No professional presence, no proof of skill, no network outside the campus gate.</p>
+        <p>Meanwhile, less-capable students from metro cities — with better connections and a more visible online presence — walked into opportunities those Kerala graduates deserved. The playing field wasn't level. It never has been. <strong>But it can be leveled.</strong></p>
+        <p>That's the insight that became The ProTrack: social media has shifted from a place to consume content to a powerful engine for career acceleration. LinkedIn, used with intention, is the fastest path from classroom to career — regardless of where you grew up.</p>
+      </div>
+      <div>
+        <div class="origin-insight">
+          <div class="origin-insight-title">The Founding Insight</div>
+          <p>Social media has shifted from a place to <em>consume content</em> to a powerful engine for <em>career acceleration.</em> For a student anywhere, LinkedIn is the fastest path from classroom to career — if used with intention and a system behind it.</p>
+        </div>
+        <div style="margin-top:1.5rem;padding:1.5rem;border:1px solid rgba(255,255,255,0.05);border-radius:12px;background:rgba(14,26,17,0.3);">
+          <div class="section-label" style="margin-bottom:0.8rem;">What They Set Out To Build</div>
+          <div style="display:flex;flex-direction:column;gap:0.8rem;">
+            <div class="apply-check">A program that <strong>works on a smartphone</strong> — no laptop, no paid tools</div>
+            <div class="apply-check">A community with <strong>real accountability</strong>, not passive video watching</div>
+            <div class="apply-check">An outcome that is <strong>a job offer or client</strong>, not a PDF certificate</div>
+            <div class="apply-check">A system that is <strong>replicable at scale</strong> across every college in India</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Founder Cards -->
+  <section class="founders-cards-section">
+    <div class="section-label">Meet the Founders</div>
+    <h2 class="section-title">Two people. One mission.</h2>
+
+    <div class="founders-cards">
+
+      <!-- Founder 1 -->
+      <div class="founder-card">
+        <div class="founder-card-top">
+          <div class="founder-avatar">HK</div>
+          <div class="founder-name">Harikrishnan Kalarikkal Joshi</div>
+          <div class="founder-role">Co-Founder · Program Lead</div>
+        </div>
+        <div class="founder-card-body">
+          <p class="founder-bio">
+            Harikrishnan is the architect of The ProTrack's curriculum and the program lead for every batch. He brings deep hands-on experience in <strong>LinkedIn strategy, personal branding, and self-directed career building</strong> — and has spent years studying how professionals in Kerala and beyond have used digital visibility to unlock opportunities that their degrees alone never could.
+          </p>
+          <p class="founder-bio">
+            His core conviction: <strong>the system matters more than the talent.</strong> Most capable students never reach their potential not because they lack intelligence, but because they lack a repeatable process for becoming visible and trusted in their target industry. The ProTrack is that process, built from first principles.
+          </p>
+          <div class="founder-beliefs">
+            <div class="founder-belief">
+              <div class="belief-dot"></div>
+              <p><strong>Believes in</strong> learning-in-public as the most powerful career accelerator available to students today.</p>
+            </div>
+            <div class="founder-belief">
+              <div class="belief-dot"></div>
+              <p><strong>Built</strong> the 10-month curriculum, the 40-milestone system, and the monthly KPI framework from scratch.</p>
+            </div>
+            <div class="founder-belief">
+              <div class="belief-dot"></div>
+              <p><strong>Leads</strong> every live group session, hot-seat coaching, and monthly review call personally.</p>
+            </div>
+          </div>
+          <div class="founder-tags">
+            <span class="tag">LinkedIn Strategy</span>
+            <span class="tag">Personal Branding</span>
+            <span class="tag">Curriculum Design</span>
+            <span class="tag">Career Coaching</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Founder 2 -->
+      <div class="founder-card">
+        <div class="founder-card-top">
+          <div class="founder-avatar">AY</div>
+          <div class="founder-name">Anoop YS</div>
+          <div class="founder-role">Co-Founder · Operations & Growth</div>
+        </div>
+        <div class="founder-card-body">
+          <p class="founder-bio">
+            Anoop drives the operations, community management, and growth strategy behind The ProTrack. He brings experience in <strong>building accountability systems, managing student communities, and scaling programs</strong> that actually produce outcomes — not just enrollments.
+          </p>
+          <p class="founder-bio">
+            His belief is rooted in a simple observation: <strong>most students don't fail from lack of resources — they fail from lack of accountability.</strong> The internet has more free learning than anyone can consume. What's missing is the structure, the peer pressure, and the weekly check-in that turns intention into action. That's what Anoop builds.
+          </p>
+          <div class="founder-beliefs">
+            <div class="founder-belief">
+              <div class="belief-dot"></div>
+              <p><strong>Believes in</strong> small batches and tight accountability loops over large cohorts with passive content.</p>
+            </div>
+            <div class="founder-belief">
+              <div class="belief-dot"></div>
+              <p><strong>Manages</strong> the daily WhatsApp/Telegram group, weekly milestone tracking, and peer feedback systems.</p>
+            </div>
+            <div class="founder-belief">
+              <div class="belief-dot"></div>
+              <p><strong>Leads</strong> student outreach, batch enrollment, and the scale pathway from Kerala to all of India.</p>
+            </div>
+          </div>
+          <div class="founder-tags">
+            <span class="tag">Community Building</span>
+            <span class="tag">Accountability Systems</span>
+            <span class="tag">Operations</span>
+            <span class="tag">Growth Strategy</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Why We Built This -->
+  <section class="why-section">
+    <div class="section-label">Why We Built This</div>
+    <h2 class="section-title">Three things we refuse to accept.</h2>
+
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">🗺️</div>
+        <h3>Geography Should Not Decide Opportunity</h3>
+        <p>A student in a small town should have the same access to professional networks, mentors, and recruiters as someone in a metro. LinkedIn makes this possible. We make it happen.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📄</div>
+        <h3>Degrees Are Not Enough Anymore</h3>
+        <p>A 9-pointer with no LinkedIn presence, no projects, and no network is less hireable than a 7-pointer with all three. We build the proof the degree doesn't provide.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🔗</div>
+        <h3>Networks Should Not Be Inherited</h3>
+        <p>Right now, students who succeed early often do so because of their family's connections — not their talent. The ProTrack builds a real professional network from zero, for everyone.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vision -->
+  <section class="vision-section">
+    <div class="glow" style="width:700px;height:700px;top:-300px;right:-200px;opacity:0.3;"></div>
+    <div class="vision-inner">
+      <div class="section-label" style="color:rgba(244,249,245,0.6);">Our Vision</div>
+      <blockquote>
+        To equip every student with the professional visibility, self-learning discipline, and career skills to secure their first meaningful opportunity — before they graduate.
+      </blockquote>
+      <p>We start with 10 students per batch. We prove the model with Batch 1. We scale with outcomes — not marketing. When the first cohort produces students with offer letters, freelance income, and internship confirmations, those stories become the programme. That's the only growth plan we need.</p>
+    </div>
+  </section>
+
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE 5 — JOIN
+══════════════════════════════════════════════ -->
+<div class="page" id="page-join">
+
+  <!-- Hero -->
+  <section class="join-hero">
+    <div class="grid-overlay"></div>
+    <div class="glow" style="width:600px;height:600px;top:-200px;right:0;"></div>
+    <div class="section-label">Join The ProTrack</div>
+    <h1>10 seats.<br>One batch.<br><span class="accent">Your career starts here.</span></h1>
+    <p>Batch 1 is limited to 10 students. We keep it small intentionally — every student is known by name, tracked by milestone, and accountable to the group. If you're serious about your first opportunity, this is the system.</p>
+  </section>
+
+  <!-- Who Can Apply -->
+  <section class="apply-who">
+    <div class="section-label">Who Can Apply</div>
+    <h2 class="section-title">You're the right fit if any of these describe you.</h2>
+
+    <div class="apply-who-grid">
+      <div class="apply-who-card">
+        <div class="num">01</div>
+        <h3>You're a college student or recent graduate</h3>
+        <p>Aged 19–24. Any stream — engineering, commerce, arts, science, or management. Year of study doesn't matter.</p>
+      </div>
+      <div class="apply-who-card">
+        <div class="num">02</div>
+        <h3>Your LinkedIn is empty or inactive</h3>
+        <p>Zero presence or a hollow profile is the starting point. You don't need to have started — just the intent to build with consistency.</p>
+      </div>
+      <div class="apply-who-card">
+        <div class="num">03</div>
+        <h3>You want your first real opportunity within 12 months</h3>
+        <p>Internship, job, or first freelance client. You have a direction even if you're still figuring it out.</p>
+      </div>
+      <div class="apply-who-card">
+        <div class="num">04</div>
+        <h3>You can commit 3–5 hours per week</h3>
+        <p>Outside college. Consistently. For 10 months. Weekly milestones are non-negotiable — that's the accountability engine.</p>
+      </div>
+      <div class="apply-who-card">
+        <div class="num">05</div>
+        <h3>You have a smartphone and internet access</h3>
+        <p>No laptop required. No paid tools. The entire program runs on what you already have.</p>
+      </div>
+      <div class="apply-who-card">
+        <div class="num">06</div>
+        <h3>You have a clear career goal — even a rough one</h3>
+        <p>You want to work in marketing, data, design, finance, product, or anything specific enough to build a network around.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Commitment -->
+  <section class="commitment-section">
+    <div class="section-label">What We Ask</div>
+    <div class="commitment-grid">
+      <div>
+        <h2 class="section-title">What you commit to when you join.</h2>
+        <p class="section-sub">The ProTrack isn't passive. It works because everyone in the batch is accountable to each other — not just to the founders.</p>
+      </div>
+      <div class="commitment-items">
+        <div class="commit-item">
+          <div class="commit-num">01</div>
+          <div>
+            <h4>One milestone every week — no exceptions</h4>
+            <p>40 milestones over 10 months. Each one is defined, specific, and submitted to the group. Consistency is the product.</p>
+          </div>
+        </div>
+        <div class="commit-item">
+          <div class="commit-num">02</div>
+          <div>
+            <h4>Attend the monthly live session</h4>
+            <p>One hour per month. 10 sessions total. This is where KPIs are reviewed, wins are celebrated, and problems are solved in real time.</p>
+          </div>
+        </div>
+        <div class="commit-item">
+          <div class="commit-num">03</div>
+          <div>
+            <h4>Be active in the group daily</h4>
+            <p>The WhatsApp/Telegram group is the accountability engine. Check-ins, questions, wins, and peer feedback happen here every day.</p>
+          </div>
+        </div>
+        <div class="commit-item">
+          <div class="commit-num">04</div>
+          <div>
+            <h4>Learn in public — post on LinkedIn</h4>
+            <p>40+ posts over 10 months. Not performances — evidence of learning. This is how recruiters find you before you apply.</p>
+          </div>
+        </div>
+        <div class="commit-item">
+          <div class="commit-num">05</div>
+          <div>
+            <h4>Ship at least one real project</h4>
+            <p>A project your target employer can click, read, and verify. This is the proof that turns a profile into a conversation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Apply CTA -->
+  <section class="apply-cta-section">
+    <div class="apply-cta-card">
+      <div class="apply-cta-left">
+        <div class="section-label">Apply Now</div>
+        <h2>Ready to get on the track?</h2>
+        <p>Message us on WhatsApp to express your interest. Tell us your name, current college, stream, and what career goal you're working toward. We'll confirm your spot in Batch 1 directly.</p>
+        <div class="apply-checklist" style="margin-top:1.5rem;">
+          <div class="apply-check">Tell us your <strong>name and college</strong></div>
+          <div class="apply-check">Share your <strong>stream and year</strong></div>
+          <div class="apply-check">Describe your <strong>career goal</strong> in one line</div>
+          <div class="apply-check">Confirm you can commit <strong>3–5 hours/week</strong></div>
+        </div>
+      </div>
+      <div class="apply-cta-right">
+        <a href="https://wa.me/91XXXXXXXXXX?text=Hi!%20I%20want%20to%20apply%20for%20The%20ProTrack%20Batch%201." class="whatsapp-btn" target="_blank">
+          <span class="whatsapp-icon">💬</span>
+          Apply via WhatsApp
+        </a>
+        <p class="apply-note">We review every application personally. Expect a response within 24 hours. Batch 1 is limited to 10 students — first come, first confirmed.</p>
+        <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:1rem;margin-top:0.5rem;">
+          <p style="font-size:0.8rem;color:var(--muted);text-align:center;">Or reach us at<br><span style="color:var(--green-bright);">hello@theprotrack.com</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Steps -->
+  <section class="steps-section">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">From application to first milestone in 4 steps.</h2>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <h3>Message Us</h3>
+        <p>Send a WhatsApp message with your name, college, stream, and career goal. One paragraph is enough.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <h3>Quick Chat</h3>
+        <p>We have a short conversation to understand your goal and confirm you're the right fit for the batch.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <h3>Join the Group</h3>
+        <p>You're added to the closed batch group and receive the pre-program checklist to complete before Month 1.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">04</div>
+        <h3>Month 1 Begins</h3>
+        <p>The first live session kicks off. Your LinkedIn journey starts. Your career trajectory changes.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title">Common questions answered.</h2>
+
+    <div class="faq-grid">
+      <div class="faq-item">
+        <div class="faq-q">Do I need a laptop to participate?</div>
+        <div class="faq-a">No. The entire program is designed to run on a smartphone and a free internet connection. No paid tools, no laptop, no subscriptions required.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">I have no LinkedIn profile. Can I still join?</div>
+        <div class="faq-a">Yes — in fact, that's the ideal starting point. Month 1 is entirely about building your profile from zero. You'll have a complete, professional profile by the end of Week 4.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What stream do I need to be from?</div>
+        <div class="faq-a">Any stream — engineering, commerce, arts, science, or management. The program is not technical. It builds professional skills that apply across all career paths.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How much time does it actually take per week?</div>
+        <div class="faq-a">3–5 hours per week outside college. This includes your weekly milestone, LinkedIn posts, skill learning, and group check-ins. It's designed to fit around your college schedule.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What happens if I miss a week?</div>
+        <div class="faq-a">Life happens. The group is understanding. But consistent attendance is what makes the program work — for you and for the batch. Accountability is the product.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is there a guarantee I'll get a job?</div>
+        <div class="faq-a">No guarantee — and anyone who offers one is lying. What we guarantee is a system, a community, and 10 months of structured effort. Students who follow through get results. That's the only honest promise.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Will this work for someone outside Kerala?</div>
+        <div class="faq-a">Absolutely. The program was originally designed for Kerala students, but the system works for any college student in India. LinkedIn is a national — and global — platform.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What skill should I learn in Month 4?</div>
+        <div class="faq-a">That's your choice — and Month 4 starts by helping you make it. The program provides a market mapping framework to choose the skill that fits your career goal, then a free 8-week learning plan to master it.</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="footer-logo" onclick="showPage('home')">The<span>ProTrack</span></div>
+  <div class="footer-center">© 2025 TheProTrack.com · All rights reserved · Built with intention.</div>
+  <div class="footer-right">
+    <a onclick="showPage('home')">Home</a>
+    <a onclick="showPage('program')">Program</a>
+    <a onclick="showPage('curriculum')">Curriculum</a>
+    <a onclick="showPage('founders')">Founders</a>
+    <a onclick="showPage('join')">Join</a>
+  </div>
+</footer>
+
+<script>
+  function showPage(id) {
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+
+    // Show target page
+    const page = document.getElementById('page-' + id);
+    if (page) {
+      page.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Highlight nav
+    const navLink = document.getElementById('nav-' + id);
+    if (navLink) navLink.classList.add('active');
+  }
+
+  // Init
+  showPage('home');
+</script>
+
+</body>
+</html>
