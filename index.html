@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The ProTrack — From Campus to Career</title>
+<meta name="description" content="A structured, outcome-based career-readiness program that colleges run alongside their academic curriculum.">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand: { 900: '#0B2A1A', 800: '#123D28', 700: '#1F4D3A', 600: '#2E7D52', 500: '#3A9D68', 400: '#4DB87A', 300: '#7DD3A0', 200: '#B2E5C8', 100: '#E0F5EA', 50: '#F0FAF4' },
+        surface: { DEFAULT: '#FAFCFB', dark: '#0A0F0D' }
+      },
+      fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+    }
+  }
+}
+</script>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { overflow-x: hidden; }
+::selection { background: #2E7D52; color: #fff; }
+
+.glow { position: absolute; border-radius: 9999px; filter: blur(80px); pointer-events: none; will-change: transform; }
+.glass { background: rgba(255,255,255,0.06); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.1); }
+
+.nav-link { position: relative; }
+.nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: #2E7D52; transition: width 0.3s ease; }
+.nav-link:hover::after { width: 100%; }
+
+.counter { font-variant-numeric: tabular-nums; }
+
+.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; }
+.faq-answer.open { max-height: 500px; }
+
+.track-card { transition: transform 0.35s ease, box-shadow 0.35s ease; }
+.track-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(11,42,26,0.12); }
+
+.timeline-dot { width: 16px; height: 16px; border-radius: 50%; border: 3px solid #2E7D52; background: #fff; position: relative; z-index: 2; }
+.timeline-dot.active { background: #2E7D52; }
+
+@keyframes pulse-ring { 0% { transform: scale(1); opacity: 0.75; } 100% { transform: scale(2.5); opacity: 0; } }
+.pulse-dot::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: #2E7D52; animation: pulse-ring 1.5s ease-out infinite; }
+
+@keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(3deg); } }
+.float-anim { animation: float 6s ease-in-out infinite; }
+.float-anim-delay { animation: float 8s ease-in-out 2s infinite; }
+
+.gradient-text { background: linear-gradient(135deg, #2E7D52, #4DB87A, #2E7D52); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+.reveal { opacity: 1; transform: none; }
+.reveal-scale { opacity: 1; transform: none; }
+
+.mobile-menu { transform: translateX(100%); transition: transform 0.35s ease; }
+.mobile-menu.open { transform: translateX(0); }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #F0FAF4; }
+::-webkit-scrollbar-thumb { background: #2E7D52; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #1F4D3A; }
+
+.founder-photo { width: 200px; height: 200px; border-radius: 24px; object-fit: cover; object-position: center top; border: 4px solid rgba(46, 125, 82, 0.2); box-shadow: 0 20px 60px rgba(11,42,26,0.15); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.founder-photo:hover { transform: scale(1.05); box-shadow: 0 30px 80px rgba(11,42,26,0.2); }
+</style>
+</head>
+<body class="font-sans bg-surface text-brand-900 antialiased overflow-x-hidden">
+
+<!-- Scroll Progress Bar -->
+<div id="progress-bar" class="fixed top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-brand-700 via-brand-500 to-brand-400 z-[60] pointer-events-none origin-left scale-x-[0.01]"></div>
+
+<!-- Navigation -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="flex items-center justify-between h-18 py-3">
+      <a href="#hero" class="flex items-center gap-3 group">
+        <svg width="36" height="36" viewBox="0 0 96 126" class="transition-transform duration-300 group-hover:scale-110">
+          <path d="M0 63 L36 27 L36 45 L18 63 L36 81 L36 99 Z" fill="#0B2A1A"/>
+          <path d="M30 63 L66 27 L66 45 L48 63 L66 81 L66 99 Z" fill="#1F4D3A"/>
+          <path d="M60 63 L96 27 L96 45 L78 63 L96 81 L96 99 Z" fill="#2E7D52"/>
+        </svg>
+        <div class="flex flex-col leading-none">
+          <span class="text-lg font-extrabold tracking-tight text-brand-900">Pro<span class="text-brand-600">Track</span></span>
+          <span class="text-[9px] font-semibold tracking-[0.2em] text-brand-600/60 uppercase">Campus to Career</span>
+        </div>
+      </a>
+      <div class="hidden lg:flex items-center gap-8">
+        <a href="#problem" class="nav-link text-sm font-medium text-brand-800/70 hover:text-brand-900 transition-colors">About</a>
+        <a href="#curriculum" class="nav-link text-sm font-medium text-brand-800/70 hover:text-brand-900 transition-colors">Curriculum</a>
+        <a href="#outcomes" class="nav-link text-sm font-medium text-brand-800/70 hover:text-brand-900 transition-colors">Outcomes</a>
+        <a href="#why-partner" class="nav-link text-sm font-medium text-brand-800/70 hover:text-brand-900 transition-colors">Why Partner</a>
+        <a href="#engagement" class="nav-link text-sm font-medium text-brand-800/70 hover:text-brand-900 transition-colors">How It Works</a>
+        <a href="#faq" class="nav-link text-sm font-medium text-brand-800/70 hover:text-brand-900 transition-colors">FAQ</a>
+        <a href="#founders" class="nav-link text-sm font-medium text-brand-800/70 hover:text-brand-900 transition-colors">Founders</a>
+        <a href="#contact" class="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-600 text-white text-sm font-semibold rounded-xl hover:bg-brand-700 transition-all hover:-translate-y-0.5 hover:shadow-lg">
+          Book a Call
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+      <button id="mobile-toggle" class="lg:hidden p-2 rounded-lg hover:bg-brand-100 transition-colors" aria-label="Menu">
+        <svg class="w-6 h-6 text-brand-900" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="mobile-menu fixed inset-0 z-[55] bg-white/95 backdrop-blur-xl flex flex-col items-center justify-center gap-8 lg:hidden">
+  <button id="mobile-close" class="absolute top-5 right-6 p-2 rounded-lg hover:bg-brand-100 transition-colors"><svg class="w-6 h-6 text-brand-900" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+  <a href="#problem" class="mobile-link text-xl font-semibold text-brand-900">About</a>
+  <a href="#curriculum" class="mobile-link text-xl font-semibold text-brand-900">Curriculum</a>
+  <a href="#outcomes" class="mobile-link text-xl font-semibold text-brand-900">Outcomes</a>
+  <a href="#why-partner" class="mobile-link text-xl font-semibold text-brand-900">Why Partner</a>
+  <a href="#engagement" class="mobile-link text-xl font-semibold text-brand-900">How It Works</a>
+  <a href="#faq" class="mobile-link text-xl font-semibold text-brand-900">FAQ</a>
+  <a href="#founders" class="mobile-link text-xl font-semibold text-brand-900">Founders</a>
+  <a href="#contact" class="mobile-link mt-4 px-8 py-3 bg-brand-600 text-white font-bold rounded-2xl">Book a Discovery Call</a>
+</div>
+
+<!-- HERO -->
+<section id="hero" class="relative bg-brand-900 overflow-hidden px-6 pt-28 pb-24 lg:pt-36 lg:pb-32">
+  <div class="glow w-[32rem] h-[32rem] bg-brand-700/20 top-[-5rem] left-[-5rem]" style="filter:blur(100px)"></div>
+  <div class="glow w-[28rem] h-[28rem] bg-brand-600/15 bottom-[-3rem] right-[10%]" style="filter:blur(90px)"></div>
+  <div class="glow w-64 h-64 bg-brand-400/10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style="filter:blur(70px)"></div>
+  <div class="absolute top-20 right-[15%] w-20 h-20 border border-brand-600/20 rounded-2xl rotate-12 float-anim hidden lg:block"></div>
+  <div class="absolute bottom-24 left-[10%] w-14 h-14 border border-brand-500/15 rounded-xl -rotate-6 float-anim-delay hidden lg:block"></div>
+
+  <div class="relative max-w-6xl mx-auto">
+    <div class="grid lg:grid-cols-[1.1fr_0.9fr] gap-16 items-center">
+      <div class="text-center lg:text-left">
+        <div class="reveal inline-flex items-center gap-2.5 bg-brand-700/30 text-brand-300 text-xs font-semibold px-4 py-2 rounded-full mb-8 border border-brand-600/30 tracking-wide">
+          <span class="relative flex h-2 w-2 flex-shrink-0"><span class="pulse-dot absolute inline-flex h-full w-full rounded-full bg-brand-400"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-brand-400"></span></span>
+          Institutional Partnership · Now Accepting Colleges
+        </div>
+        <h1 class="reveal text-4xl sm:text-5xl lg:text-5xl xl:text-[3.5rem] font-extrabold text-white leading-[1.08] tracking-tight mb-6">
+          Your students are graduating with degrees.<br>
+          <span class="text-brand-400">Are they graduating</span><br>
+          with <span class="text-brand-400">careers?</span>
+        </h1>
+        <p class="reveal text-white/60 text-lg sm:text-xl leading-relaxed max-w-xl mx-auto lg:mx-0 mb-10">
+          The ProTrack is a structured, outcome-based career-readiness program that colleges embed inside their own campus — closing the gap between a degree and a job offer, for every student.
+        </p>
+        <div class="reveal flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-14">
+          <a href="#contact" class="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand-600 text-white font-bold rounded-2xl hover:bg-brand-500 transition-all text-base shadow-lg shadow-brand-600/20 hover:shadow-xl hover:shadow-brand-500/30 hover:-translate-y-0.5">
+            Book a Curriculum Walkthrough
+            <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#curriculum" class="inline-flex items-center justify-center gap-2 px-8 py-4 glass text-white font-semibold rounded-2xl hover:bg-white/10 transition-all text-base">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+            View Curriculum
+          </a>
+        </div>
+        <div class="reveal border-t border-white/10 pt-8 grid grid-cols-3 gap-6 max-w-md mx-auto lg:mx-0">
+          <div><p class="text-2xl font-extrabold text-white counter" data-target="5">0</p><p class="text-xs text-white/45 font-medium mt-1">Skill Tracks</p></div>
+          <div><p class="text-2xl font-extrabold text-white counter" data-target="50">0</p><p class="text-xs text-white/45 font-medium mt-1">Modules</p></div>
+          <div><p class="text-2xl font-extrabold text-white counter" data-target="200">0</p><p class="text-xs text-white/45 font-medium mt-1">+ Real Outcomes</p></div>
+        </div>
+      </div>
+      <div class="reveal-scale hidden lg:flex items-center justify-center">
+        <div class="relative w-full max-w-md">
+          <div class="relative w-64 h-64 mx-auto mb-8">
+            <svg viewBox="0 0 96 126" class="w-full h-full drop-shadow-2xl">
+              <path d="M0 63 L36 27 L36 45 L18 63 L36 81 L36 99 Z" fill="#0B2A1A" opacity="0.9"/>
+              <path d="M30 63 L66 27 L66 45 L48 63 L66 81 L66 99 Z" fill="#1F4D3A" opacity="0.9"/>
+              <path d="M60 63 L96 27 L96 45 L78 63 L96 81 L96 99 Z" fill="#2E7D52" opacity="0.9"/>
+            </svg>
+            <div class="absolute -top-4 -right-4 w-6 h-6 bg-brand-400/40 rounded-full float-anim"></div>
+            <div class="absolute -bottom-2 -left-6 w-4 h-4 bg-brand-300/30 rounded-full float-anim-delay"></div>
+          </div>
+          <div class="space-y-3">
+            <div class="glass rounded-xl px-4 py-3 flex items-center gap-3 hover:bg-white/10 transition-all cursor-default"><span class="w-8 h-8 rounded-lg bg-brand-600/30 flex items-center justify-center text-brand-300 text-sm font-bold">1</span><span class="text-white/80 text-sm font-medium">The Independent Learner</span></div>
+            <div class="glass rounded-xl px-4 py-3 flex items-center gap-3 hover:bg-white/10 transition-all cursor-default"><span class="w-8 h-8 rounded-lg bg-brand-600/30 flex items-center justify-center text-brand-300 text-sm font-bold">2</span><span class="text-white/80 text-sm font-medium">The Data-Backed Mind</span></div>
+            <div class="glass rounded-xl px-4 py-3 flex items-center gap-3 hover:bg-white/10 transition-all cursor-default"><span class="w-8 h-8 rounded-lg bg-brand-600/30 flex items-center justify-center text-brand-300 text-sm font-bold">3</span><span class="text-white/80 text-sm font-medium">The AI-Powered Professional</span></div>
+            <div class="glass rounded-xl px-4 py-3 flex items-center gap-3 hover:bg-white/10 transition-all cursor-default"><span class="w-8 h-8 rounded-lg bg-brand-600/30 flex items-center justify-center text-brand-300 text-sm font-bold">4</span><span class="text-white/80 text-sm font-medium">The Finisher</span></div>
+            <div class="glass rounded-xl px-4 py-3 flex items-center gap-3 hover:bg-white/10 transition-all cursor-default"><span class="w-8 h-8 rounded-lg bg-brand-600/30 flex items-center justify-center text-brand-300 text-sm font-bold">5</span><span class="text-white/80 text-sm font-medium">Career Launch</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem" class="relative py-24 lg:py-32 bg-surface overflow-hidden">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8">
+    <div class="reveal text-center mb-16">
+      <span class="inline-block text-xs font-bold tracking-[0.25em] text-brand-600 uppercase mb-4">The Problem</span>
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-900 leading-tight mb-6">Placement records are judged by outcomes,<br class="hidden sm:block"><span class="gradient-text">not just degrees.</span></h2>
+      <p class="text-brand-800/60 text-lg max-w-2xl mx-auto leading-relaxed">Most colleges offer employability training as disconnected one-off sessions — a resume workshop here, a mock interview there — with no structured follow-through.</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6 lg:gap-8">
+      <div class="reveal group relative bg-white rounded-2xl p-8 border border-brand-100 hover:border-brand-300 transition-all duration-300 hover:shadow-xl hover:shadow-brand-100/50">
+        <div class="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center mb-5"><svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg></div>
+        <h3 class="text-xl font-bold text-brand-900 mb-3">Fragmented Training</h3>
+        <p class="text-brand-800/60 leading-relaxed">Most colleges offer employability training as disconnected sessions — a resume workshop here, a mock interview there — with no continuity, no tracking, and no real proof of learning.</p>
+      </div>
+      <div class="reveal group relative bg-white rounded-2xl p-8 border border-brand-100 hover:border-brand-300 transition-all duration-300 hover:shadow-xl hover:shadow-brand-100/50">
+        <div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center mb-5"><svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg></div>
+        <h3 class="text-xl font-bold text-brand-900 mb-3">Recruiters Screen Beyond Technical</h3>
+        <p class="text-brand-800/60 leading-relaxed">Soft skills, self-learning ability, AI fluency, and reliability are now screened for as heavily as technical knowledge — but are rarely taught with any structure.</p>
+      </div>
+      <div class="reveal group relative bg-white rounded-2xl p-8 border border-brand-100 hover:border-brand-300 transition-all duration-300 hover:shadow-xl hover:shadow-brand-100/50">
+        <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mb-5"><svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+        <h3 class="text-xl font-bold text-brand-900 mb-3">Placement Cells Are Stretched Thin</h3>
+        <p class="text-brand-800/60 leading-relaxed">Training & Placement Officers don't have the bandwidth to design and run a sustained, term-long employability curriculum alongside their existing responsibilities.</p>
+      </div>
+      <div class="reveal group relative bg-white rounded-2xl p-8 border border-brand-100 hover:border-brand-300 transition-all duration-300 hover:shadow-xl hover:shadow-brand-100/50">
+        <div class="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center mb-5"><svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342"/></svg></div>
+        <h3 class="text-xl font-bold text-brand-900 mb-3">Degrees No Longer Guarantee Careers</h3>
+        <p class="text-brand-800/60 leading-relaxed">Employers consistently report that fresh graduates are technically qualified but professionally unprepared — unable to learn independently, work with data, use AI, or present with confidence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIFFERENCE -->
+<section id="difference" class="relative py-24 lg:py-32 bg-brand-900 overflow-hidden">
+  <div class="glow w-[24rem] h-[24rem] bg-brand-600/15 top-0 right-[-5rem]" style="filter:blur(90px)"></div>
+  <div class="glow w-[20rem] h-[20rem] bg-brand-400/10 bottom-0 left-[5%]" style="filter:blur(80px)"></div>
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 relative">
+    <div class="reveal text-center mb-16">
+      <span class="inline-block text-xs font-bold tracking-[0.25em] text-brand-400 uppercase mb-4">The ProTrack Difference</span>
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight">Not another workshop series.<br><span class="text-brand-400">A structured system.</span></h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="reveal glass rounded-2xl p-7 hover:bg-white/10 transition-all duration-300 group"><div class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center mb-4 group-hover:bg-brand-600/30 transition-colors"><svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6.75 3v2.25M6.75 18.75V21M6.75 8.25a5.25 5.25 0 015.25-5.25h6a5.25 5.25 0 010 10.5h-6A5.25 5.25 0 016.75 8.25z"/></svg></div><h3 class="text-lg font-bold text-white mb-2">10-Month Structured Curriculum</h3><p class="text-white/50 text-sm leading-relaxed">Not a one-time workshop. Five parallel skill tracks delivered over a full academic-style calendar with weekly progression.</p></div>
+      <div class="reveal glass rounded-2xl p-7 hover:bg-white/10 transition-all duration-300 group"><div class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center mb-4 group-hover:bg-brand-600/30 transition-colors"><svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><h3 class="text-lg font-bold text-white mb-2">Real, Checkable Outcomes</h3><p class="text-white/50 text-sm leading-relaxed">Skills proven through real weekly deliverables — not attendance certificates. Every module ends in something tangible.</p></div>
+      <div class="reveal glass rounded-2xl p-7 hover:bg-white/10 transition-all duration-300 group"><div class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center mb-4 group-hover:bg-brand-600/30 transition-colors"><svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><h3 class="text-lg font-bold text-white mb-2">15 Minutes a Day</h3><p class="text-white/50 text-sm leading-relaxed">Small daily/weekly increments that fit around academic schedules — not in competition with them.</p></div>
+      <div class="reveal glass rounded-2xl p-7 hover:bg-white/10 transition-all duration-300 group"><div class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center mb-4 group-hover:bg-brand-600/30 transition-colors"><svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg></div><h3 class="text-lg font-bold text-white mb-2">Live Monthly Expert Sessions</h3><p class="text-white/50 text-sm leading-relaxed">Real recruiters and industry professionals come to your campus — virtually or in person — every single month.</p></div>
+      <div class="reveal glass rounded-2xl p-7 hover:bg-white/10 transition-all duration-300 group"><div class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center mb-4 group-hover:bg-brand-600/30 transition-colors"><svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5"/></svg></div><h3 class="text-lg font-bold text-white mb-2">Every Stream, No Domain Bias</h3><p class="text-white/50 text-sm leading-relaxed">Engineering, arts & science, commerce, management — the same five capabilities matter identically across every discipline.</p></div>
+      <div class="reveal glass rounded-2xl p-7 hover:bg-white/10 transition-all duration-300 group"><div class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center mb-4 group-hover:bg-brand-600/30 transition-colors"><svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg></div><h3 class="text-lg font-bold text-white mb-2">Trackable by Placement Cell</h3><p class="text-white/50 text-sm leading-relaxed">Module completion and outcome submission rates per student — usable in placement reporting and accreditation documentation.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="relative py-24 lg:py-32 bg-surface overflow-hidden">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+      <div>
+        <div class="reveal"><span class="inline-block text-xs font-bold tracking-[0.25em] text-brand-600 uppercase mb-4">About ProTrack</span><h2 class="text-3xl sm:text-4xl font-extrabold text-brand-900 leading-tight mb-6">A degree no longer guarantees a career.<br><span class="gradient-text">Employability is a skill — and it can be taught.</span></h2></div>
+        <div class="reveal space-y-5 text-brand-800/65 leading-relaxed"><p>The ProTrack exists because of a simple, uncomfortable observation: a degree no longer guarantees a career. Employers consistently report that fresh graduates are technically qualified but professionally unprepared.</p><p>We believe employability is a skill set, not a personality trait — it can be taught, practiced, and proven, just like any technical subject. Real proof beats certificates. Small, consistent effort beats occasional intensity.</p></div>
+        <div class="reveal mt-8 space-y-4">
+          <div class="flex items-start gap-3"><div class="w-6 h-6 rounded-full bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5"><svg class="w-3.5 h-3.5 text-brand-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4.5 12.75l6 6 9-13.5"/></svg></div><p class="text-brand-800/70 text-sm"><strong class="text-brand-900">Real proof beats certificates.</strong> A student who has shipped a real project is more employable than one who has only attended a lecture about it.</p></div>
+          <div class="flex items-start gap-3"><div class="w-6 h-6 rounded-full bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5"><svg class="w-3.5 h-3.5 text-brand-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4.5 12.75l6 6 9-13.5"/></svg></div><p class="text-brand-800/70 text-sm"><strong class="text-brand-900">Small, consistent effort beats intensity.</strong> Fifteen minutes a day, sustained over months, builds more durable capability than a one-day bootcamp.</p></div>
+          <div class="flex items-start gap-3"><div class="w-6 h-6 rounded-full bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5"><svg class="w-3.5 h-3.5 text-brand-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4.5 12.75l6 6 9-13.5"/></svg></div><p class="text-brand-800/70 text-sm"><strong class="text-brand-900">These skills are domain-agnostic.</strong> Whether a student becomes an engineer, analyst, marketer, or manager — the same five capabilities determine success.</p></div>
+        </div>
+      </div>
+      <div class="reveal-scale">
+        <div class="relative">
+          <div class="bg-red-50/60 rounded-2xl p-6 border border-red-100 mb-4">
+            <div class="flex items-center gap-2 mb-4"><div class="w-3 h-3 rounded-full bg-red-300"></div><span class="text-sm font-bold text-red-700 uppercase tracking-wide">Typical Training</span></div>
+            <div class="space-y-3"><div class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-red-200"></div><span class="text-sm text-red-600/80">Episodic — single sessions, no continuity</span></div><div class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-red-200"></div><span class="text-sm text-red-600/80">No tracking, no real proof of learning</span></div><div class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-red-200"></div><span class="text-sm text-red-600/80">Completed slide decks, not real outcomes</span></div><div class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-red-200"></div><span class="text-sm text-red-600/80">Only the self-selecting few participate</span></div></div>
+          </div>
+          <div class="bg-brand-50 rounded-2xl p-6 border border-brand-200">
+            <div class="flex items-center gap-2 mb-4"><div class="w-3 h-3 rounded-full bg-brand-500"></div><span class="text-sm font-bold text-brand-700 uppercase tracking-wide">The ProTrack</span></div>
+            <div class="space-y-3"><div class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-brand-400"></div><span class="text-sm text-brand-700">Structured like an academic course — modules, weekly outcomes, clear progression</span></div><div class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-brand-400"></div><span class="text-sm text-brand-700">Every module ends in something real: a shipped project, a sent email, a recorded interview</span></div><div class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-brand-400"></div><span class="text-sm text-brand-700">Runs across an entire cohort — not just optional workshops</span></div><div class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-brand-400"></div><span class="text-sm text-brand-700">Trackable, reportable, accreditation-ready</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRICULUM -->
+<section id="curriculum" class="relative py-24 lg:py-32 bg-brand-900 overflow-hidden">
+  <div class="glow w-[30rem] h-[30rem] bg-brand-700/15 top-[20%] left-[-8rem]" style="filter:blur(100px)"></div>
+  <div class="glow w-[20rem] h-[20rem] bg-brand-400/10 bottom-[10%] right-[-3rem]" style="filter:blur(80px)"></div>
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 relative">
+    <div class="reveal text-center mb-16">
+      <span class="inline-block text-xs font-bold tracking-[0.25em] text-brand-400 uppercase mb-4">Curriculum</span>
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-6">Five parallel tracks.<br><span class="text-brand-400">Ten months. One transformed graduate.</span></h2>
+      <p class="text-white/50 text-lg max-w-2xl mx-auto">Each month, students progress on all five tracks simultaneously — never one skill at a time, in isolation.</p>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+      <div class="reveal track-card glass rounded-2xl p-7 group cursor-default"><div class="flex items-center gap-3 mb-4"><span class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center text-brand-300 font-extrabold text-lg group-hover:bg-brand-600/30 transition-colors">1</span><h3 class="text-lg font-bold text-white">The Independent Learner</h3></div><p class="text-white/50 text-sm leading-relaxed mb-4">Self-learning any tool, technology, or skill independently — the ability to be handed something unfamiliar and become functional without hand-holding.</p><div class="flex items-center gap-2 text-brand-400 text-xs font-semibold"><span>10 modules</span><span class="text-white/20">|</span><span>50 chapters</span><span class="text-white/20">|</span><span>~15 min/day</span></div></div>
+      <div class="reveal track-card glass rounded-2xl p-7 group cursor-default"><div class="flex items-center gap-3 mb-4"><span class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center text-brand-300 font-extrabold text-lg group-hover:bg-brand-600/30 transition-colors">2</span><h3 class="text-lg font-bold text-white">The Data-Backed Mind</h3></div><p class="text-white/50 text-sm leading-relaxed mb-4">Working with data and spreadsheets to support real decisions — a skill valued across every department, not just technical roles.</p><div class="flex items-center gap-2 text-brand-400 text-xs font-semibold"><span>10 modules</span><span class="text-white/20">|</span><span>50 chapters</span><span class="text-white/20">|</span><span>~15 min/day</span></div></div>
+      <div class="reveal track-card glass rounded-2xl p-7 group cursor-default"><div class="flex items-center gap-3 mb-4"><span class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center text-brand-300 font-extrabold text-lg group-hover:bg-brand-600/30 transition-colors">3</span><h3 class="text-lg font-bold text-white">The AI-Powered Professional</h3></div><p class="text-white/50 text-sm leading-relaxed mb-4">Using AI tools to produce real work faster, with the judgment to verify and refine — not just "knowing ChatGPT exists."</p><div class="flex items-center gap-2 text-brand-400 text-xs font-semibold"><span>10 modules</span><span class="text-white/20">|</span><span>50 chapters</span><span class="text-white/20">|</span><span>~15 min/day</span></div></div>
+      <div class="reveal track-card glass rounded-2xl p-7 group cursor-default"><div class="flex items-center gap-3 mb-4"><span class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center text-brand-300 font-extrabold text-lg group-hover:bg-brand-600/30 transition-colors">4</span><h3 class="text-lg font-bold text-white">The Finisher</h3></div><p class="text-white/50 text-sm leading-relaxed mb-4">Managing tasks, deadlines, and follow-through to actual completion — consistently named by employers as the most-lacking trait in new hires.</p><div class="flex items-center gap-2 text-brand-400 text-xs font-semibold"><span>10 modules</span><span class="text-white/20">|</span><span>50 chapters</span><span class="text-white/20">|</span><span>~15 min/day</span></div></div>
+      <div class="reveal track-card glass rounded-2xl p-7 group cursor-default md:col-span-2 lg:col-span-2">
+        <div class="flex flex-col gap-4">
+          <div><div class="flex items-center gap-3 mb-4"><span class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center text-brand-300 font-extrabold text-lg group-hover:bg-brand-600/30 transition-colors">5</span><h3 class="text-lg font-bold text-white">Career Launch</h3></div><p class="text-white/50 text-sm leading-relaxed">Resume, LinkedIn, personal branding, networking, portfolio building, group discussions, and mock interviews — the practical mechanics of converting capability into an offer.</p></div>
+          <div class="flex flex-wrap gap-2"><span class="px-3 py-1.5 bg-brand-600/15 text-brand-300 text-xs font-medium rounded-lg border border-brand-600/20">LinkedIn Profile</span><span class="px-3 py-1.5 bg-brand-600/15 text-brand-300 text-xs font-medium rounded-lg border border-brand-600/20">Resume</span><span class="px-3 py-1.5 bg-brand-600/15 text-brand-300 text-xs font-medium rounded-lg border border-brand-600/20">Portfolio</span><span class="px-3 py-1.5 bg-brand-600/15 text-brand-300 text-xs font-medium rounded-lg border border-brand-600/20">Mock Interview</span><span class="px-3 py-1.5 bg-brand-600/15 text-brand-300 text-xs font-medium rounded-lg border border-brand-600/20">+ Expert Seminars</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal grid grid-cols-2 md:grid-cols-4 gap-6 glass rounded-2xl p-8">
+      <div class="text-center"><p class="text-3xl font-extrabold text-white counter" data-target="5">0</p><p class="text-xs text-white/40 font-medium mt-1">Parallel Skill Tracks</p></div>
+      <div class="text-center"><p class="text-3xl font-extrabold text-white counter" data-target="50">0</p><p class="text-xs text-white/40 font-medium mt-1">Total Modules</p></div>
+      <div class="text-center"><p class="text-3xl font-extrabold text-white counter" data-target="200">0</p><p class="text-xs text-white/40 font-medium mt-1">+ Trackable Outcomes</p></div>
+      <div class="text-center"><p class="text-3xl font-extrabold text-white counter" data-target="10">0</p><p class="text-xs text-white/40 font-medium mt-1"> Expert Seminars</p></div>
+    </div>
+    <div class="reveal mt-16 text-center">
+      <span class="inline-block text-xs font-bold tracking-[0.25em] text-brand-400 uppercase mb-6">Sample Month</span>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div class="glass rounded-xl p-4 text-left"><p class="text-brand-400 text-xs font-bold mb-1">INDEPENDENT LEARNER</p><p class="text-white/70 text-sm">Breaking down a new skill into learnable parts</p></div>
+        <div class="glass rounded-xl p-4 text-left"><p class="text-brand-400 text-xs font-bold mb-1">DATA-BACKED MIND</p><p class="text-white/70 text-sm">Core spreadsheet formulas</p></div>
+        <div class="glass rounded-xl p-4 text-left"><p class="text-brand-400 text-xs font-bold mb-1">AI PROFESSIONAL</p><p class="text-white/70 text-sm">Writing better AI prompts</p></div>
+        <div class="glass rounded-xl p-4 text-left"><p class="text-brand-400 text-xs font-bold mb-1">THE FINISHER</p><p class="text-white/70 text-sm">Capturing every task in one system</p></div>
+        <div class="glass rounded-xl p-4 text-left border-brand-400/30"><p class="text-brand-400 text-xs font-bold mb-1">CAREER LAUNCH + SEMINAR</p><p class="text-white/70 text-sm">Building a complete LinkedIn profile</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTCOMES -->
+<section id="outcomes" class="relative py-24 lg:py-32 bg-surface overflow-hidden">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8">
+    <div class="reveal text-center mb-16"><span class="inline-block text-xs font-bold tracking-[0.25em] text-brand-600 uppercase mb-4">Outcomes</span><h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-900 leading-tight mb-6">What a student walks away with.<br><span class="gradient-text">What the institution can point to.</span></h2></div>
+    <div class="grid lg:grid-cols-2 gap-12">
+      <div>
+        <h3 class="reveal text-xl font-bold text-brand-900 mb-6 flex items-center gap-3"><span class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center"><svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg></span>For the Student</h3>
+        <div class="space-y-4">
+          <div class="reveal flex items-start gap-4 bg-white rounded-xl p-5 border border-brand-100 hover:border-brand-300 transition-all hover:shadow-lg hover:shadow-brand-50"><div class="w-8 h-8 rounded-lg bg-brand-50 flex items-center justify-center flex-shrink-0 mt-0.5"><svg class="w-4 h-4 text-brand-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342"/></svg></div><p class="text-sm text-brand-800/70 leading-relaxed">Demonstrated ability to teach themselves any new tool or skill — evidenced by two independently completed learning projects.</p></div>
+          <div class="reveal flex items-start gap-4 bg-white rounded-xl p-5 border border-brand-100 hover:border-brand-300 transition-all hover:shadow-lg hover:shadow-brand-50"><div class="w-8 h-8 rounded-lg bg-brand-50 flex items-center justify-center flex-shrink-0 mt-0.5"><svg class="w-4 h-4 text-brand-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5"/></svg></div><p class="text-sm text-brand-800/70 leading-relaxed">Working fluency in spreadsheets and data-based decision-making — evidenced by a real data-backed recommendation.</p></div>
+          <div class="reveal flex items-start gap-4 bg-white rounded-xl p-5 border border-brand-100 hover:border-brand-300 transition-all hover:shadow-lg hover:shadow-brand-50"><div class="w-8 h-8 rounded-lg bg-brand-50 flex items-center justify-center flex-shrink-0 mt-0.5"><svg class="w-4 h-4 text-brand-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z"/></svg></div><p class="text-sm text-brand-800/70 leading-relaxed">A documented personal AI workflow, used to complete a real task end-to-end.</p></div>
+          <div class="reveal flex items-start gap-4 bg-white rounded-xl p-5 border border-brand-100 hover:border-brand-300 transition-all hover:shadow-lg hover:shadow-brand-50"><div class="w-8 h-8 rounded-lg bg-brand-50 flex items-center justify-center flex-shrink-0 mt-0.5"><svg class="w-4 h-4 text-brand-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><p class="text-sm text-brand-800/70 leading-relaxed">A track record of following at least one real, multi-step project through to completion, on a deadline.</p></div>
+          <div class="reveal flex items-start gap-4 bg-white rounded-xl p-5 border border-brand-100 hover:border-brand-300 transition-all hover:shadow-lg hover:shadow-brand-50"><div class="w-8 h-8 rounded-lg bg-brand-50 flex items-center justify-center flex-shrink-0 mt-0.5"><svg class="w-4 h-4 text-brand-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.25 14.15v4.25c0 1.095-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.085-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0"/></svg></div><p class="text-sm text-brand-800/70 leading-relaxed">A complete professional presence: live LinkedIn profile, polished resume, working portfolio, and recorded mock interview performance.</p></div>
+        </div>
+      </div>
+      <div>
+        <h3 class="reveal text-xl font-bold text-brand-900 mb-6 flex items-center gap-3"><span class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center"><svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"/></svg></span>For the Institution</h3>
+        <div class="space-y-4">
+          <div class="reveal flex items-start gap-4 bg-white rounded-xl p-5 border border-brand-100 hover:border-brand-300 transition-all hover:shadow-lg hover:shadow-brand-50"><div class="w-8 h-8 rounded-lg bg-brand-50 flex items-center justify-center flex-shrink-0 mt-0.5"><svg class="w-4 h-4 text-brand-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg></div><p class="text-sm text-brand-800/70 leading-relaxed">A structured employability program running across an entire cohort — not just a self-selecting few who attend optional workshops.</p></div>
+          <div class="reveal flex items-start gap-4 bg-white rounded-xl p-5 border border-brand-100 hover:border-brand-300 transition-all hover:shadow-lg hover:shadow-brand-50"><div class="w-8 h-8 rounded-lg bg-brand-50 flex items-center justify-center flex-shrink-0 mt-0.5"><svg class="w-4 h-4 text-brand-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg></div><p class="text-sm text-brand-800/70 leading-relaxed">Documented, trackable evidence per student — real outputs, not attendance sheets — usable in placement reporting and NAAC documentation.</p></div>
+          <div class="reveal flex items-start gap-4 bg-white rounded-xl p-5 border border-brand-100 hover:border-brand-300 transition-all hover:shadow-lg hover:shadow-brand-50"><div class="w-8 h-8 rounded-lg bg-brand-50 flex items-center justify-center flex-shrink-0 mt-0.5"><svg class="w-4 h-4 text-brand-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg></div><p class="text-sm text-brand-800/70 leading-relaxed">Live engagement with real industry professionals through the monthly expert seminar series — strengthening industry-connect narrative.</p></div>
+          <div class="reveal flex items-start gap-4 bg-white rounded-xl p-5 border border-brand-100 hover:border-brand-300 transition-all hover:shadow-lg hover:shadow-brand-50"><div class="w-8 h-8 rounded-lg bg-brand-50 flex items-center justify-center flex-shrink-0 mt-0.5"><svg class="w-4 h-4 text-brand-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/></svg></div><p class="text-sm text-brand-800/70 leading-relaxed">A differentiated employability offering that can be highlighted in admissions and placement marketing.</p></div>
+        </div>
+        <div class="reveal mt-8 bg-brand-50 rounded-2xl p-6 border border-brand-200">
+          <h4 class="text-sm font-bold text-brand-900 mb-4 uppercase tracking-wide">How Success Is Measured</h4>
+          <div class="space-y-3"><div class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div><span class="text-sm text-brand-800/70">Module completion and real-outcome submission rates per student</span></div><div class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div><span class="text-sm text-brand-800/70">Pre- and post-program readiness indicators compared at start and end</span></div><div class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-500"></div><span class="text-sm text-brand-800/70">Placement-readiness milestones in place well before placement season</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY PARTNER -->
+<section id="why-partner" class="relative py-24 lg:py-32 bg-surface overflow-hidden">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8">
+    <div class="reveal text-center mb-16"><span class="inline-block text-xs font-bold tracking-[0.25em] text-brand-600 uppercase mb-4">Why Partner</span><h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-900 leading-tight mb-6">Built for institutions,<br><span class="gradient-text">not just individuals.</span></h2><p class="text-brand-800/60 text-lg max-w-2xl mx-auto">The structure, pacing, and reporting are built around what a Training & Placement Officer or department head actually needs.</p></div>
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="reveal group relative bg-white rounded-2xl overflow-hidden border border-brand-100 hover:border-brand-300 transition-all duration-300 hover:shadow-xl"><div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-600 to-brand-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div><div class="p-8"><div class="w-14 h-14 rounded-2xl bg-brand-50 flex items-center justify-center mb-6 group-hover:bg-brand-100 transition-colors"><svg class="w-7 h-7 text-brand-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><h3 class="text-xl font-bold text-brand-900 mb-3">Reduces Load on Your Placement Cell</h3><ul class="space-y-2 text-sm text-brand-800/60"><li class="flex items-start gap-2"><span class="text-brand-500 mt-1">+</span>No need to independently source guest lecturers — it's a designed, sequenced curriculum</li><li class="flex items-start gap-2"><span class="text-brand-500 mt-1">+</span>Runs in the background of the academic calendar</li><li class="flex items-start gap-2"><span class="text-brand-500 mt-1">+</span>Built-in expert seminar series — no external coordination needed</li></ul></div></div>
+      <div class="reveal group relative bg-white rounded-2xl overflow-hidden border border-brand-100 hover:border-brand-300 transition-all duration-300 hover:shadow-xl"><div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-600 to-brand-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div><div class="p-8"><div class="w-14 h-14 rounded-2xl bg-brand-50 flex items-center justify-center mb-6 group-hover:bg-brand-100 transition-colors"><svg class="w-7 h-7 text-brand-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"/></svg></div><h3 class="text-xl font-bold text-brand-900 mb-3">Domain-Agnostic by Design</h3><p class="text-sm text-brand-800/60 leading-relaxed mb-4">Whether your institution is engineering-focused, arts & science, commerce/management, or multi-disciplinary — all five tracks apply without modification.</p><div class="flex flex-wrap gap-2"><span class="px-3 py-1 bg-brand-50 text-brand-700 text-xs font-medium rounded-lg">Engineering</span><span class="px-3 py-1 bg-brand-50 text-brand-700 text-xs font-medium rounded-lg">Arts & Science</span><span class="px-3 py-1 bg-brand-50 text-brand-700 text-xs font-medium rounded-lg">Commerce</span><span class="px-3 py-1 bg-brand-50 text-brand-700 text-xs font-medium rounded-lg">Management</span></div></div></div>
+      <div class="reveal group relative bg-white rounded-2xl overflow-hidden border border-brand-100 hover:border-brand-300 transition-all duration-300 hover:shadow-xl"><div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-600 to-brand-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div><div class="p-8"><div class="w-14 h-14 rounded-2xl bg-brand-50 flex items-center justify-center mb-6 group-hover:bg-brand-100 transition-colors"><svg class="w-7 h-7 text-brand-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"/></svg></div><h3 class="text-xl font-bold text-brand-900 mb-3">Flexible Engagement</h3><ul class="space-y-2 text-sm text-brand-800/60"><li class="flex items-start gap-2"><span class="text-brand-500 mt-1">+</span>Co-curricular program, add-on credit course, or placement-cell initiative</li><li class="flex items-start gap-2"><span class="text-brand-500 mt-1">+</span>Pilot with a single department before full rollout</li><li class="flex items-start gap-2"><span class="text-brand-500 mt-1">+</span>Adapts to your existing LMS or runs through ProTrack's own system</li></ul></div></div>
+      <div class="reveal group relative bg-white rounded-2xl overflow-hidden border border-brand-100 hover:border-brand-300 transition-all duration-300 hover:shadow-xl"><div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-600 to-brand-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div><div class="p-8"><div class="w-14 h-14 rounded-2xl bg-brand-50 flex items-center justify-center mb-6 group-hover:bg-brand-100 transition-colors"><svg class="w-7 h-7 text-brand-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg></div><h3 class="text-xl font-bold text-brand-900 mb-3">A Partner, Not Just a Vendor</h3><p class="text-sm text-brand-800/60 leading-relaxed">Built and run by founders who are themselves active builders and educators — not a generic training vendor reselling a stock curriculum. The program is actively maintained, refined, and adapted based on what's actually working on the ground.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ENGAGEMENT MODEL -->
+<section id="engagement" class="relative py-24 lg:py-32 bg-brand-900 overflow-hidden">
+  <div class="glow w-[24rem] h-[24rem] bg-brand-600/10 top-[10%] right-[-5rem]" style="filter:blur(90px)"></div>
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 relative">
+    <div class="reveal text-center mb-16"><span class="inline-block text-xs font-bold tracking-[0.25em] text-brand-400 uppercase mb-4">Engagement Model</span><h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-6">How a partnership<br><span class="text-brand-400">typically works.</span></h2></div>
+    <div class="relative max-w-3xl mx-auto">
+      <div class="absolute left-6 top-0 bottom-0 w-px bg-brand-700/50 hidden md:block"></div>
+      <div class="space-y-8">
+        <div class="reveal flex items-start gap-6 group"><div class="hidden md:flex flex-col items-center flex-shrink-0"><div class="timeline-dot active group-hover:scale-125 transition-transform"></div></div><div class="glass rounded-2xl p-6 flex-1 hover:bg-white/10 transition-all"><span class="text-xs font-bold text-brand-400 tracking-wide">STEP 1</span><h3 class="text-lg font-bold text-white mb-2 mt-1">Discovery Call</h3><p class="text-white/50 text-sm">Understand your institution's current placement/training setup, batch size, and specific goals.</p></div></div>
+        <div class="reveal flex items-start gap-6 group"><div class="hidden md:flex flex-col items-center flex-shrink-0"><div class="timeline-dot group-hover:scale-125 transition-transform"></div></div><div class="glass rounded-2xl p-6 flex-1 hover:bg-white/10 transition-all"><span class="text-xs font-bold text-brand-400 tracking-wide">STEP 2</span><h3 class="text-lg font-bold text-white mb-2 mt-1">Curriculum Walkthrough</h3><p class="text-white/50 text-sm">A detailed session with your placement cell or department heads covering all 5 tracks, sample modules, and reporting capabilities.</p></div></div>
+        <div class="reveal flex items-start gap-6 group"><div class="hidden md:flex flex-col items-center flex-shrink-0"><div class="timeline-dot group-hover:scale-125 transition-transform"></div></div><div class="glass rounded-2xl p-6 flex-1 hover:bg-white/10 transition-all"><span class="text-xs font-bold text-brand-400 tracking-wide">STEP 3</span><h3 class="text-lg font-bold text-white mb-2 mt-1">Pilot Proposal</h3><p class="text-white/50 text-sm">A tailored proposal for either a department-level pilot or a full-batch rollout, with defined scope, timeline, and reporting structure.</p></div></div>
+        <div class="reveal flex items-start gap-6 group"><div class="hidden md:flex flex-col items-center flex-shrink-0"><div class="timeline-dot group-hover:scale-125 transition-transform"></div></div><div class="glass rounded-2xl p-6 flex-1 hover:bg-white/10 transition-all"><span class="text-xs font-bold text-brand-400 tracking-wide">STEP 4</span><h3 class="text-lg font-bold text-white mb-2 mt-1">Onboarding</h3><p class="text-white/50 text-sm">Student onboarding, system setup, and faculty/placement-cell orientation before the program begins.</p></div></div>
+        <div class="reveal flex items-start gap-6 group"><div class="hidden md:flex flex-col items-center flex-shrink-0"><div class="timeline-dot group-hover:scale-125 transition-transform"></div></div><div class="glass rounded-2xl p-6 flex-1 hover:bg-white/10 transition-all"><span class="text-xs font-bold text-brand-400 tracking-wide">STEP 5</span><h3 class="text-lg font-bold text-white mb-2 mt-1">Delivery & Tracking</h3><p class="text-white/50 text-sm">The 10-month program runs with regular progress reporting shared with the institution.</p></div></div>
+        <div class="reveal flex items-start gap-6 group"><div class="hidden md:flex flex-col items-center flex-shrink-0"><div class="timeline-dot group-hover:scale-125 transition-transform"></div></div><div class="glass rounded-2xl p-6 flex-1 hover:bg-white/10 transition-all"><span class="text-xs font-bold text-brand-400 tracking-wide">STEP 6</span><h3 class="text-lg font-bold text-white mb-2 mt-1">Review & Renewal</h3><p class="text-white/50 text-sm">End-of-program outcomes review, with options to expand scope, renew for the next batch, or adjust based on feedback.</p></div></div>
+      </div>
+    </div>
+    <div class="reveal mt-16 grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
+      <div class="glass rounded-xl p-5 text-center hover:bg-white/10 transition-all"><div class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center mx-auto mb-3"><svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg></div><h4 class="text-sm font-bold text-white mb-1">Per-Batch Licensing</h4><p class="text-white/40 text-xs">Pricing based on enrolled students per academic year</p></div>
+      <div class="glass rounded-xl p-5 text-center hover:bg-white/10 transition-all"><div class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center mx-auto mb-3"><svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"/></svg></div><h4 class="text-sm font-bold text-white mb-1">Department Pilot</h4><p class="text-white/40 text-xs">Smaller-scale trial before a wider rollout</p></div>
+      <div class="glass rounded-xl p-5 text-center hover:bg-white/10 transition-all"><div class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center mx-auto mb-3"><svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342"/></svg></div><h4 class="text-sm font-bold text-white mb-1">Co-Branded Certificate</h4><p class="text-white/40 text-xs">Joint institution + ProTrack certificate track</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="relative py-24 lg:py-32 bg-surface overflow-hidden">
+  <div class="max-w-3xl mx-auto px-6 lg:px-8">
+    <div class="reveal text-center mb-16"><span class="inline-block text-xs font-bold tracking-[0.25em] text-brand-600 uppercase mb-4">FAQ</span><h2 class="text-3xl sm:text-4xl font-extrabold text-brand-900 leading-tight">Questions institutions<br><span class="gradient-text">commonly ask.</span></h2></div>
+    <div class="space-y-3">
+      <div class="reveal faq-item bg-white rounded-xl border border-brand-100 overflow-hidden hover:border-brand-200 transition-colors"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" aria-expanded="false"><span class="text-sm font-semibold text-brand-900 pr-4">Will this conflict with our academic timetable?</span><svg class="faq-icon w-5 h-5 text-brand-600 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg></button><div class="faq-answer px-5 pb-0"><p class="text-sm text-brand-800/60 leading-relaxed pb-5">No. The program is designed in small daily/weekly increments (around 15 minutes a day per skill) specifically so it runs alongside academics rather than competing with them for large blocks of time.</p></div></div>
+      <div class="reveal faq-item bg-white rounded-xl border border-brand-100 overflow-hidden hover:border-brand-200 transition-colors"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" aria-expanded="false"><span class="text-sm font-semibold text-brand-900 pr-4">Does this work for non-technical departments (arts, commerce, management)?</span><svg class="faq-icon w-5 h-5 text-brand-600 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg></button><div class="faq-answer px-5 pb-0"><p class="text-sm text-brand-800/60 leading-relaxed pb-5">Yes. All five tracks were deliberately designed to be domain-agnostic. Self-learning, data literacy, AI fluency, follow-through, and career-launch skills apply identically regardless of stream.</p></div></div>
+      <div class="reveal faq-item bg-white rounded-xl border border-brand-100 overflow-hidden hover:border-brand-200 transition-colors"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" aria-expanded="false"><span class="text-sm font-semibold text-brand-900 pr-4">How is student progress tracked and reported to us?</span><svg class="faq-icon w-5 h-5 text-brand-600 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg></button><div class="faq-answer px-5 pb-0"><p class="text-sm text-brand-800/60 leading-relaxed pb-5">Each module ends in a real, checkable output (not just attendance). The placement cell or department coordinator receives regular progress reports showing completion rates and outcome quality across the cohort.</p></div></div>
+      <div class="reveal faq-item bg-white rounded-xl border border-brand-100 overflow-hidden hover:border-brand-200 transition-colors"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" aria-expanded="false"><span class="text-sm font-semibold text-brand-900 pr-4">Can we pilot this with one department or batch first?</span><svg class="faq-icon w-5 h-5 text-brand-600 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg></button><div class="faq-answer px-5 pb-0"><p class="text-sm text-brand-800/60 leading-relaxed pb-5">Yes. A department-level or single-batch pilot is a common starting point before a full-institution rollout.</p></div></div>
+      <div class="reveal faq-item bg-white rounded-xl border border-brand-100 overflow-hidden hover:border-brand-200 transition-colors"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" aria-expanded="false"><span class="text-sm font-semibold text-brand-900 pr-4">Who delivers the monthly expert seminars?</span><svg class="faq-icon w-5 h-5 text-brand-600 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg></button><div class="faq-answer px-5 pb-0"><p class="text-sm text-brand-800/60 leading-relaxed pb-5">Industry professionals — recruiters, hiring managers, and HR leaders — relevant to that month's Career Launch module. For example, a recruiter for the LinkedIn module, a hiring manager for the Mock Interview module.</p></div></div>
+      <div class="reveal faq-item bg-white rounded-xl border border-brand-100 overflow-hidden hover:border-brand-200 transition-colors"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" aria-expanded="false"><span class="text-sm font-semibold text-brand-900 pr-4">Does this replace our existing placement training?</span><svg class="faq-icon w-5 h-5 text-brand-600 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg></button><div class="faq-answer px-5 pb-0"><p class="text-sm text-brand-800/60 leading-relaxed pb-5">It's designed to run alongside and strengthen existing placement training — providing the structured, sustained curriculum that most placement cells don't have the bandwidth to build in-house, while your existing team continues to own employer relationships and final placement drives.</p></div></div>
+      <div class="reveal faq-item bg-white rounded-xl border border-brand-100 overflow-hidden hover:border-brand-200 transition-colors"><button class="faq-toggle w-full flex items-center justify-between p-5 text-left" aria-expanded="false"><span class="text-sm font-semibold text-brand-900 pr-4">What does our faculty/placement team need to do?</span><svg class="faq-icon w-5 h-5 text-brand-600 flex-shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg></button><div class="faq-answer px-5 pb-0"><p class="text-sm text-brand-800/60 leading-relaxed pb-5">Minimal ongoing effort is required from your team beyond initial coordination and periodic progress reviews. A single faculty or placement-cell coordinator is typically sufficient as the institutional point of contact.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDERS -->
+<section id="founders" class="relative py-24 lg:py-32 bg-surface overflow-hidden">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8">
+    <div class="reveal text-center mb-16"><span class="inline-block text-xs font-bold tracking-[0.25em] text-brand-600 uppercase mb-4">Founders</span><h2 class="text-3xl sm:text-4xl font-extrabold text-brand-900 leading-tight mb-6">Built by practitioners,<br><span class="gradient-text">not a training vendor.</span></h2><p class="text-brand-800/60 text-lg max-w-2xl mx-auto">The ProTrack is built at the intersection of curriculum design and operational execution — one founder focused on what students need to learn, the other on how the program runs and scales.</p></div>
+    <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      <div class="reveal group bg-white rounded-2xl p-8 border border-brand-100 hover:border-brand-300 transition-all duration-300 hover:shadow-xl text-center">
+        <img src="hari.jpg" alt="Harikrishnan Kalarikkal Joshi" class="founder-photo mx-auto mb-6">
+        <h3 class="text-lg font-bold text-brand-900">Harikrishnan Kalarikkal Joshi</h3>
+        <p class="text-sm text-brand-600 font-medium mb-4">Hari · Curriculum & Design</p>
+        <p class="text-sm text-brand-800/60 leading-relaxed">Kerala-based founder and educator running multiple ventures focused on education and career development. Founder of <strong class="text-brand-900">BrainCode</strong>, an ed-tech platform for school students, and <strong class="text-brand-900">Grow with Hari</strong>, a consulting practice for startup founders. Works in a hands-on, AI-first, builder's style — designing systems and curricula directly.</p>
+      </div>
+      <div class="reveal group bg-white rounded-2xl p-8 border border-brand-100 hover:border-brand-300 transition-all duration-300 hover:shadow-xl text-center">
+        <img src="anoop.jpg" alt="Anoop YS" class="founder-photo mx-auto mb-6">
+        <h3 class="text-lg font-bold text-brand-900">Anoop YS</h3>
+        <p class="text-sm text-brand-600 font-medium mb-4">Operations & Growth</p>
+        <p class="text-sm text-brand-800/60 leading-relaxed">Co-founded The ProTrack and leads its operations and growth. Focused on how the program runs, scales, and reaches the institutions and students it's built for. Brings the operational execution discipline that ensures every institutional partnership gets proper attention during rollout and delivery.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="relative py-24 lg:py-32 bg-brand-900 overflow-hidden">
+  <div class="glow w-[30rem] h-[30rem] bg-brand-600/15 top-[-5rem] left-[20%]" style="filter:blur(100px)"></div>
+  <div class="glow w-[20rem] h-[20rem] bg-brand-400/10 bottom-[-3rem] right-[10%]" style="filter:blur(80px)"></div>
+  <div class="absolute top-16 left-[8%] w-16 h-16 border border-brand-600/15 rounded-2xl rotate-12 float-anim hidden lg:block"></div>
+  <div class="absolute bottom-20 right-[12%] w-10 h-10 border border-brand-500/10 rounded-xl -rotate-6 float-anim-delay hidden lg:block"></div>
+  <div class="max-w-4xl mx-auto px-6 lg:px-8 relative text-center">
+    <div class="reveal"><span class="inline-block text-xs font-bold tracking-[0.25em] text-brand-400 uppercase mb-4">Next Steps</span><h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-6">Ready to explore<br><span class="text-brand-400">a partnership?</span></h2><p class="text-white/50 text-lg max-w-xl mx-auto mb-12">We work with a limited number of institutions at a time to ensure each partnership gets proper attention during rollout. The next step is a short discovery call.</p></div>
+    <div class="reveal grid sm:grid-cols-3 gap-6 mb-14">
+      <div class="glass rounded-xl p-5"><div class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center mx-auto mb-3 text-brand-400 font-extrabold">1</div><p class="text-white/70 text-sm">Schedule a 30-minute discovery call with your placement cell or department head.</p></div>
+      <div class="glass rounded-xl p-5"><div class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center mx-auto mb-3 text-brand-400 font-extrabold">2</div><p class="text-white/70 text-sm">Receive a tailored curriculum walkthrough and proposal for your batch size and goals.</p></div>
+      <div class="glass rounded-xl p-5"><div class="w-10 h-10 rounded-xl bg-brand-600/20 flex items-center justify-center mx-auto mb-3 text-brand-400 font-extrabold">3</div><p class="text-white/70 text-sm">Decide on a pilot or full rollout timeline that fits your academic calendar.</p></div>
+    </div>
+    <div class="reveal flex flex-col sm:flex-row gap-4 justify-center mb-12">
+      <a href="mailto:hello@theprotrack.com" class="group inline-flex items-center justify-center gap-2 px-10 py-5 bg-brand-600 text-white font-bold rounded-2xl hover:bg-brand-500 transition-all text-lg shadow-lg shadow-brand-600/20 hover:shadow-xl hover:-translate-y-0.5">Schedule a Discovery Call<svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <a href="mailto:hello@theprotrack.com" class="inline-flex items-center justify-center gap-2 px-10 py-5 glass text-white font-semibold rounded-2xl hover:bg-white/10 transition-all text-lg"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>Request Full Curriculum Document</a>
+    </div>
+    <div class="reveal"><p class="text-white/30 text-sm">Final pricing and engagement terms are customized per institution based on batch size, delivery format, and scope.</p></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-brand-900 border-t border-white/5 py-12">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8">
+    <div class="grid md:grid-cols-3 gap-10 mb-10">
+      <div><div class="flex items-center gap-3 mb-4"><svg width="28" height="28" viewBox="0 0 96 126"><path d="M0 63 L36 27 L36 45 L18 63 L36 81 L36 99 Z" fill="#1F4D3A"/><path d="M30 63 L66 27 L66 45 L48 63 L66 81 L66 99 Z" fill="#2E7D52"/><path d="M60 63 L96 27 L96 45 L78 63 L96 81 L96 99 Z" fill="#4DB87A"/></svg><span class="text-base font-extrabold text-white">Pro<span class="text-brand-400">Track</span></span></div><p class="text-white/40 text-sm leading-relaxed">A career-readiness program built for colleges to embed inside their own campus — from campus to career.</p></div>
+      <div><h4 class="text-xs font-bold text-white/60 uppercase tracking-wider mb-4">Navigate</h4><div class="space-y-2"><a href="#problem" class="block text-sm text-white/40 hover:text-white/70 transition-colors">About</a><a href="#curriculum" class="block text-sm text-white/40 hover:text-white/70 transition-colors">Curriculum</a><a href="#outcomes" class="block text-sm text-white/40 hover:text-white/70 transition-colors">Outcomes</a><a href="#why-partner" class="block text-sm text-white/40 hover:text-white/70 transition-colors">Why Partner</a><a href="#faq" class="block text-sm text-white/40 hover:text-white/70 transition-colors">FAQ</a></div></div>
+      <div><h4 class="text-xs font-bold text-white/60 uppercase tracking-wider mb-4">Get in Touch</h4><div class="space-y-2"><a href="mailto:hello@theprotrack.com" class="block text-sm text-white/40 hover:text-white/70 transition-colors">hello@theprotrack.com</a><p class="text-sm text-white/40">Kerala, India</p></div></div>
+    </div>
+    <div class="border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4"><p class="text-xs text-white/25">&copy; 2025 The ProTrack. All rights reserved.</p><p class="text-xs text-white/25">From Campus to Career</p></div>
+  </div>
+</footer>
+
+<script>
+// GSAP
+gsap.registerPlugin(ScrollTrigger);
+
+// Progress bar
+gsap.to('#progress-bar', { scaleX: 1, ease: 'none', scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom bottom', scrub: 0.3 } });
+
+// Reveal animations
+gsap.utils.toArray('.reveal').forEach((el, i) => {
+  gsap.from(el, {
+    opacity: 0, y: 40, duration: 0.9, ease: 'power3.out',
+    scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' },
+    delay: el.closest('.grid') ? (i % 4) * 0.1 : 0
+  });
+});
+
+gsap.utils.toArray('.reveal-scale').forEach(el => {
+  gsap.from(el, {
+    opacity: 0, scale: 0.9, duration: 1, ease: 'power3.out',
+    scrollTrigger: { trigger: el, start: 'top 88%' }
+  });
+});
+
+// Staggered grid children
+gsap.utils.toArray('.grid').forEach(grid => {
+  const children = grid.querySelectorAll('.reveal');
+  if (children.length > 1) {
+    gsap.from(children, {
+      opacity: 0, y: 40, duration: 0.7, ease: 'power3.out', stagger: 0.12,
+      scrollTrigger: { trigger: grid, start: 'top 85%' }
+    });
+  }
+});
+
+// Counters
+const counters = document.querySelectorAll('.counter');
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseInt(el.dataset.target);
+      const duration = 1500;
+      const startTime = performance.now();
+      const animate = (now) => {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(target * eased);
+        if (progress < 1) requestAnimationFrame(animate);
+        else el.textContent = target;
+      };
+      requestAnimationFrame(animate);
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+counters.forEach(c => counterObserver.observe(c));
+
+// Navbar
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 80) {
+    navbar.classList.add('bg-white/90', 'backdrop-blur-xl', 'shadow-sm', 'border-b', 'border-brand-100/50');
+  } else {
+    navbar.classList.remove('bg-white/90', 'backdrop-blur-xl', 'shadow-sm', 'border-b', 'border-brand-100/50');
+  }
+}, { passive: true });
+
+// Mobile menu
+document.getElementById('mobile-toggle').addEventListener('click', () => document.getElementById('mobile-menu').classList.add('open'));
+document.getElementById('mobile-close').addEventListener('click', () => document.getElementById('mobile-menu').classList.remove('open'));
+document.querySelectorAll('.mobile-link').forEach(link => link.addEventListener('click', () => document.getElementById('mobile-menu').classList.remove('open')));
+
+// FAQ
+document.querySelectorAll('.faq-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const answer = btn.closest('.faq-item').querySelector('.faq-answer');
+    const icon = btn.querySelector('.faq-icon');
+    const isOpen = answer.classList.contains('open');
+    document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+    document.querySelectorAll('.faq-icon').forEach(ic => ic.style.transform = 'rotate(0deg)');
+    document.querySelectorAll('.faq-toggle').forEach(b => b.setAttribute('aria-expanded', 'false'));
+    if (!isOpen) { answer.classList.add('open'); icon.style.transform = 'rotate(180deg)'; btn.setAttribute('aria-expanded', 'true'); }
+  });
+});
+
+// Parallax glows
+gsap.utils.toArray('.glow').forEach(glow => {
+  gsap.to(glow, { y: -30, scrollTrigger: { trigger: glow.closest('section') || glow.parentElement, start: 'top bottom', end: 'bottom top', scrub: 1 } });
+});
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) { window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' }); }
+  });
+});
+</script>
+</body>
+</html>
